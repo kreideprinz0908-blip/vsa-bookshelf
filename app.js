@@ -325,7 +325,7 @@ const INITIAL_BOOKS = [
     title: "Exploring Creation with Advanced Physics (2nd Edition)",
     author: "Apologia",
     category: "Physics II",
-    price: 45,
+    price: 70,
     condition: "Very Good",
     status: "Available",
     notes: "Apologia 经典高阶物理教材。深入探讨高阶物理定理，适合完成基础物理及三角学后的高阶理科学生或 VSA/TPS 课程选修。",
@@ -337,7 +337,7 @@ const INITIAL_BOOKS = [
     title: "Solutions and Tests for Exploring Creation with Advanced Physics",
     author: "Apologia",
     category: "Physics II",
-    price: 15,
+    price: 20,
     condition: "Very Good",
     status: "Available",
     notes: "高阶物理（Advanced Physics）配套答案与测试手册。包含书中所有 Module 课后习题、复习题的详细解答以及单元测试题与评分标准。",
@@ -395,12 +395,12 @@ const INITIAL_BOOKS = [
   {
     id: "toefl-practice",
     title: "TOEFL Practice Tests & Guides",
-    author: "Official ETS Guide",
+    author: "新东方",
     category: "TOEFL Preparation",
     price: 7,
     condition: "Very Good",
     status: "Available",
-    notes: "托福官方备考真题与练习指南。含丰富听力、阅读、写作及口语模拟训练。特惠福利：买二送三（购买此本即送三本配套备考练习册）！",
+    notes: "新东方托福备考真题与练习指南。含丰富听力、阅读、写作及口语模拟训练。特惠福利：买二送三（购买此本即送三本配套备考练习册）！",
     videoUrl: "https://drive.google.com/file/d/1MSmWAmxbNZwR3vcjaJSt96KnMfUbaCr3/view?usp=drivesdk",
     hue: 180
   },
@@ -537,7 +537,9 @@ function loadState() {
         b.category === "AP Physics 1" || 
         b.category === "AP Biology" || 
         b.category === "Advanced Physics"
-      ) || !booksState.some(b => b.id === "german-wie-gehts");
+      ) || !booksState.some(b => b.id === "german-wie-gehts")
+        || booksState.some(b => b.id === "advanced-physics" && b.price !== 70)
+        || booksState.some(b => b.id === "toefl-practice" && b.author === "Official ETS Guide");
       if (hasLegacy) {
         booksState = [...INITIAL_BOOKS];
         saveState();
