@@ -436,6 +436,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "经典德语入门教程教材。适合 German II (德语二) 课程及德语零基础入门研读，内容丰富详尽，成色良好。",
     videoUrl: "https://drive.google.com/file/d/1r9cZ_e2lzsqsBNzKamTc_Y6Wvh77ZVB-/view?usp=drivesdk",
+    officialPrice: 338.24,
+    officialUrl: "https://www.ecampus.com/wie-gehts-10th-sevin-dieter-sevin-ingrid/bk/9781285733609",
+    weight: 2.95,
     hue: 100
   },
   {
