@@ -290,7 +290,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《屋大维恺撒的世界》。VSA 核心人文大课 Omnibus IV (古代世界史与文学) 指定必读历史文献叙事书。",
     videoUrl: "https://drive.google.com/file/d/1RaGFAX39QOQNHDBSJBHgdKzd0DAGHriD/view?usp=drivesdk",
-    hue: 30
+    hue: 30,
+    officialPrice: 18.95,
+    officialUrl: "https://veritaspress.com/products/augustus-caesars-world",
+    weight: 1.49
   },
   {
     id: "fierce-wars",
@@ -301,7 +304,10 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Reserved for Samuel",
     notes: "斯宾塞《仙后》导读本。VSA 高阶人文神学综合课 Omnibus V (中世纪至现代II) 经典必读原著伴读书籍。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
-    hue: 45
+    hue: 45,
+    officialPrice: 19.95,
+    officialUrl: "https://veritaspress.com/products/fierce-wars-and-faithful-loves",
+    weight: 0.75
   },
   {
     id: "omnibus-v-textbook",
@@ -312,7 +318,10 @@ const INITIAL_BOOKS = [
     condition: "Like New",
     status: "Reserved for Samuel",
     notes: "Veritas Press 史诗级人文神学大教材第五册（Primary 卷）。VSA 高阶人文学科 Omnibus V 核心大纲读本。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
-    hue: 45
+    hue: 45,
+    officialPrice: 110.00,
+    officialUrl: "https://veritaspress.com/products/omnibus-v-student-text",
+    weight: 4.85
   },
   {
     id: "jane-austen-miniatures",
@@ -324,7 +333,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《微缩模型与道德》。简·奥斯汀文学世界与古典叙事分析。VSA 高阶文学选修/小说写作/人文学科经典伴读推荐书目。",
     videoUrl: "https://drive.google.com/file/d/1amkVYbUJn-Jq-XIfRU7cfTiJAWn0Xw9d/view?usp=drivesdk",
-    hue: 320
+    hue: 320,
+    officialPrice: 16.00,
+    officialUrl: "https://veritaspress.com/products/miniatures-and-morals",
+    weight: 0.63
   },
   {
     id: "novare-science",
@@ -335,7 +347,10 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Reserved for Lucy",
     notes: "Novare 物理科学教材。VSA 官方选用 Physical Science (物理科学) 课程核心教科书，成色极佳。此书已被 Lucy 买走，如有需要可直接联系 Lucy 购买。",
-    hue: 145
+    hue: 145,
+    officialPrice: 86.95,
+    officialUrl: "https://veritaspress.com/products/physical-science-novare-student-text",
+    weight: 2.06
   },
   {
     id: "rhetoric-ii",
@@ -616,7 +631,20 @@ function loadState() {
               stateBook.videoUrl = initBook.videoUrl;
               bookChanged = true;
             }
-            // 2. Add any other properties that exist in INITIAL_BOOKS but not in the saved state
+            // 2. Force-update comparison columns if they differ from code presets
+            if (initBook.officialPrice !== stateBook.officialPrice) {
+              stateBook.officialPrice = initBook.officialPrice;
+              bookChanged = true;
+            }
+            if (initBook.weight !== stateBook.weight) {
+              stateBook.weight = initBook.weight;
+              bookChanged = true;
+            }
+            if (initBook.officialUrl !== stateBook.officialUrl) {
+              stateBook.officialUrl = initBook.officialUrl;
+              bookChanged = true;
+            }
+            // 3. Add any other properties that exist in INITIAL_BOOKS but not in the saved state
             for (const key in initBook) {
               if (!(key in stateBook)) {
                 stateBook[key] = initBook[key];
