@@ -115,7 +115,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《简·爱》英文原版。VSA Secondary 级别 Literature Transition (文学过渡课) 核心阅读小说。",
     videoUrl: "https://drive.google.com/file/d/15PyGPR-_pCplyneMpr8pC-VRQA069V0e/view?usp=drivesdk",
-    hue: 195
+    hue: 195,
+    officialPrice: 8.95,
+    officialUrl: "https://veritaspress.com/products/jane-eyre",
+    weight: 0.65
   },
   {
     id: "scarlet-pimpernel",
@@ -127,7 +130,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《红花侠》原版。VSA Literature Transition 课程核心小说，情节引人入胜，成色良好。",
     videoUrl: "https://drive.google.com/file/d/1vi2EY_5eK0fk-z1hQ2-0GyMQwjpLgdZo/view?usp=drivesdk",
-    hue: 195
+    hue: 195,
+    officialPrice: 8.99,
+    officialUrl: "https://veritaspress.com/products/the-scarlet-pimpernel",
+    weight: 0.45
   },
   {
     id: "tempest",
@@ -139,7 +145,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "莎士比亚戏剧《暴风雨》。VSA Literature Transition 经典文学赏析单元指定阅读版本。",
     videoUrl: "https://drive.google.com/file/d/1fUMRt8SnEGIyEHRS8xOWf3-PwgYtvGfR/view?usp=drivesdk",
-    hue: 195
+    hue: 195,
+    officialPrice: 12.99,
+    officialUrl: "https://veritaspress.com/products/tempest-the-oxford-school-shakespeare",
+    weight: 0.55
   },
   {
     id: "mockingbird",
@@ -151,7 +160,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《杀死一只知更鸟》英文原版。VSA Literature Transition 指定必读现代经典文学。",
     videoUrl: "https://drive.google.com/file/d/1pChakdamsmM-LTkf8m0lhPPcrYzs4sti/view?usp=drivesdk",
-    hue: 195
+    hue: 195,
+    officialPrice: 16.99,
+    officialUrl: "https://veritaspress.com/products/to-kill-a-mockingbird",
+    weight: 0.6
   },
   {
     id: "argument-student",
@@ -163,7 +175,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《论证构建者》学生版。VSA Logic II (逻辑学二) 官方选用教材，用于培养高阶论证与说服力技能。",
     videoUrl: "https://drive.google.com/file/d/1z9sUPvjcyGkEdUQhYxeSWvIpbO3iapio/view?usp=drivesdk",
-    hue: 120
+    hue: 120,
+    officialPrice: 28.95,
+    officialUrl: "https://veritaspress.com/products/argument-builder-student-edition",
+    weight: 1.25
   },
   {
     id: "argument-teacher",
