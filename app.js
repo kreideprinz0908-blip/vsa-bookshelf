@@ -869,11 +869,23 @@ function setupEventListeners() {
     openModal(adminModal);
   });
 
+  // Reopen academic profile modal
+  const promoModal = document.getElementById("promoModal");
+  const aboutMeHeaderBtn = document.getElementById("aboutMeHeaderBtn");
+  const aboutMeSidebarBtn = document.getElementById("aboutMeSidebarBtn");
+
+  if (aboutMeHeaderBtn && promoModal) {
+    aboutMeHeaderBtn.addEventListener("click", () => openModal(promoModal));
+  }
+  if (aboutMeSidebarBtn && promoModal) {
+    aboutMeSidebarBtn.addEventListener("click", () => openModal(promoModal));
+  }
+
   // Promo Modal direct link to contact drawer
   const promoContactBtn = document.getElementById("promoContactBtn");
   if (promoContactBtn) {
     promoContactBtn.addEventListener("click", () => {
-      closeModal(document.getElementById("promoModal"));
+      closeModal(promoModal);
       openModal(contactModal);
     });
   }
