@@ -497,7 +497,6 @@ const previewCoverCourse = document.getElementById("previewCoverCourse");
 const previewCoverTitle = document.getElementById("previewCoverTitle");
 const previewCoverAuthor = document.getElementById("previewCoverAuthor");
 
-// --- Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
   // Check if admin mode is activated via URL parameters
   const urlParams = new URLSearchParams(window.location.search);
@@ -516,6 +515,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render Category pills & book cards
   renderCategories();
   renderApp();
+
+  // Auto-launch Tutoring Promo Modal (once per session to avoid disruption)
+  const promoModal = document.getElementById("promoModal");
+  if (promoModal && !sessionStorage.getItem("chris_seen_promo")) {
+    setTimeout(() => {
+      openModal(promoModal);
+      sessionStorage.setItem("chris_seen_promo", "true");
+    }, 800); // Elegant entrance delay
+  }
 });
 
 // --- State Controllers ---
@@ -860,6 +868,15 @@ function setupEventListeners() {
     resetAdminForm();
     openModal(adminModal);
   });
+
+  // Promo Modal direct link to contact drawer
+  const promoContactBtn = document.getElementById("promoContactBtn");
+  if (promoContactBtn) {
+    promoContactBtn.addEventListener("click", () => {
+      closeModal(document.getElementById("promoModal"));
+      openModal(contactModal);
+    });
+  }
 
   // Close modals on generic overlays or close buttons
   document.querySelectorAll(".modal-overlay").forEach(overlay => {
