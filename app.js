@@ -861,6 +861,19 @@ function setupEventListeners() {
       triggerDeleteBook(bookId);
       return;
     }
+
+    // Ignore if direct video preview button is clicked (let standard link handle it)
+    const videoBtn = e.target.closest(".book-video-btn");
+    if (videoBtn) {
+      return;
+    }
+
+    // Default: Click on card itself -> Trigger Details View Modal
+    const card = e.target.closest(".book-card");
+    if (card) {
+      const bookId = card.dataset.id;
+      triggerViewBookDetail(bookId);
+    }
   });
 
   cancelFormBtn.addEventListener("click", resetAdminForm);
@@ -870,6 +883,104 @@ function setupEventListeners() {
   document.getElementById("importDataBtn").addEventListener("click", triggerDataImport);
   document.getElementById("resetDefaultBtn").addEventListener("click", triggerResetDefault);
   document.getElementById("saveDataActionBtn").addEventListener("click", executeDataImport);
+}
+
+function triggerViewBookDetail(bookId) {
+  const book = booksState.find(b => b.id === bookId);
+  if (!book) return;
+
+  const bookDetailModal = document.getElementById("bookDetailModal");
+  const detailCover = document.getElementById("detailCover");
+  const detailCoverCourse = document.getElementById("detailCoverCourse");
+  const detailCoverTitle = document.getElementById("detailCoverTitle");
+  const detailCoverAuthor = document.getElementById("detailCoverAuthor");
+  const detailCategory = document.getElementById("detailCategory");
+  const detailCondition = document.getElementById("detailCondition");
+  const detailTitle = document.getElementById("detailTitle");
+  const detailAuthor = document.getElementById("detailAuthor");
+  const detailNotes = document.getElementById("detailNotes");
+  const detailPrice = document.getElementById("detailPrice");
+  const detailStatusPill = document.getElementById("detailStatusPill");
+  const detailStatusLabel = document.getElementById("detailStatusLabel");
+  const detailButtonsContainer = document.getElementById("detailButtonsContainer");
+
+  // Cover 3D HSL gradient
+  const hue = book.hue || 210;
+  detailCover.style.background = `linear-gradient(135deg, hsl(${hue}, 50%, 40%), hsl(${hue}, 50%, 20%))`;
+  
+  // Set 3D cover text
+  detailCoverCourse.textContent = book.category.substring(0, 5).toUpperCase();
+  detailCoverTitle.textContent = book.title;
+  detailCoverAuthor.textContent = book.author || 'Chris Gu';
+
+  // Set Metadata Details
+  detailCategory.textContent = book.category;
+  detailCondition.textContent = book.condition;
+  detailTitle.textContent = book.title;
+  detailAuthor.textContent = book.author || "未知";
+  detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
+  detailPrice.textContent = `$${book.price}`;
+
+  // Status Pill Configuration
+  detailStatusPill.className = "status-pill"; // Reset classes
+  let statusClass = "available";
+  let statusLabel = "在售 (Available)";
+  
+  if (book.status === "Reserved for Lucy") {
+    statusClass = "reserved";
+    statusLabel = "已售 • Lucy";
+  } else if (book.status === "Reserved for Samuel") {
+    statusClass = "reserved";
+    statusLabel = "已售 • Samuel";
+  } else if (book.status === "Sold") {
+    statusClass = "sold";
+    statusLabel = "已售出";
+  } else if (book.status.startsWith("Reserved")) {
+    statusClass = "reserved";
+    statusLabel = book.status.replace("Reserved for ", "已售 • ");
+  }
+  detailStatusPill.classList.add(statusClass);
+  detailStatusLabel.textContent = statusLabel;
+
+  // Setup Dynamic Action Buttons
+  detailButtonsContainer.innerHTML = "";
+
+  // 1. Direct Video Button in modal
+  if (book.videoUrl) {
+    const videoBtn = document.createElement("a");
+    videoBtn.href = book.videoUrl;
+    videoBtn.target = "_blank";
+    videoBtn.rel = "noopener noreferrer";
+    videoBtn.className = "btn-large-glow btn-video";
+    videoBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+      <span>📺 观看详细视频书况</span>
+    `;
+    detailButtonsContainer.appendChild(videoBtn);
+  }
+
+  // 2. Reservation Button
+  const actionBtn = document.createElement("button");
+  actionBtn.className = "btn-large-glow btn-reserve";
+  
+  if (book.status === "Available") {
+    actionBtn.innerHTML = `<span>🤝 联系 Chris 预订这本书</span>`;
+    actionBtn.onclick = () => {
+      closeModal(bookDetailModal);
+      openModal(document.getElementById("contactModal"));
+    };
+  } else {
+    // Reserved / sold out context
+    const buyerName = statusLabel.includes(" • ") ? statusLabel.split(" • ")[1] : "其他同学";
+    actionBtn.innerHTML = `<span>💬 咨询二次转让（联系 ${buyerName}）</span>`;
+    actionBtn.onclick = () => {
+      alert(`此书已被 ${buyerName} 买走。若你确实极其急需，可在后续开学后与该同学联系，咨询其使用完毕后是否可以二次转让给你，或联系 Chris 为你推荐同类型参考教材！`);
+    };
+  }
+  detailButtonsContainer.appendChild(actionBtn);
+
+  // Open the Modal View
+  openModal(bookDetailModal);
 }
 
 // --- Modal Helper Functions ---

@@ -175,6 +175,60 @@
     </div>
   </footer>
 
+  <!-- MODAL: Book Details View -->
+  <div class="modal-overlay" id="bookDetailModal">
+    <div class="modal-content glass detail-modal-width animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title">📖 书籍详情书况</h3>
+        <button class="modal-close" data-close-modal="bookDetailModal">&times;</button>
+      </div>
+      <div class="modal-body detail-body-flex">
+        <!-- Left: Interactive 3D Cover Display -->
+        <div class="detail-left">
+          <div class="book-cover-container detail-cover-container">
+            <div class="book-cover-3d detail-cover-3d" id="detailCover">
+              <div class="book-spine"></div>
+              <div class="book-cover-content">
+                <span class="cover-course" id="detailCoverCourse">COURSE</span>
+                <h4 class="cover-title" id="detailCoverTitle">Book Title</h4>
+                <span class="cover-author" id="detailCoverAuthor">Author</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Right: Metadata & Un-truncated notes -->
+        <div class="detail-right">
+          <div class="detail-meta-top">
+            <span class="book-course-label" id="detailCategory">Category</span>
+            <span class="book-condition-badge" id="detailCondition">Condition</span>
+          </div>
+          <h2 class="detail-title" id="detailTitle">Book Title</h2>
+          <p class="detail-author">作者：<span id="detailAuthor">Author</span></p>
+          
+          <div class="detail-desc-box">
+            <h4 class="desc-box-title">📝 详细书况备注</h4>
+            <p class="detail-notes" id="detailNotes">Complete book notes description...</p>
+          </div>
+
+          <div class="detail-action-box">
+            <div class="detail-price-box">
+              <span class="price-label">标价</span>
+              <span class="price-value" id="detailPrice">$0</span>
+            </div>
+            <span class="status-pill" id="detailStatusPill">
+              <span class="status-dot"></span>
+              <span id="detailStatusLabel">Status</span>
+            </span>
+          </div>
+
+          <div class="detail-buttons" id="detailButtonsContainer">
+            <!-- Dynamic Buttons will be populated via app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Contact Information -->
   <div class="modal-overlay" id="contactModal">
     <div class="modal-content glass animate-slide-in">
