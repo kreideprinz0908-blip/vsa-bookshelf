@@ -17,7 +17,8 @@ const INITIAL_BOOKS = [
     videoUrl: "https://drive.google.com/file/d/1NlUvQYYQz4a5YskujWn5UXHbO3WKSvI-/view?usp=drivesdk",
     hue: 215,
     officialPrice: 9.99,
-    officialUrl: "https://veritaspress.com/products/the-new-college-latin-english-dictionary"
+    officialUrl: "https://veritaspress.com/products/the-new-college-latin-english-dictionary",
+    weight: 0.73
   },
   {
     id: "livy-rome",
@@ -31,7 +32,8 @@ const INITIAL_BOOKS = [
     videoUrl: "https://drive.google.com/file/d/1x2drgvI6WG9BMG9ioepbocG7F4SWzZrB/view?usp=drivesdk",
     hue: 215,
     officialPrice: 48.00,
-    officialUrl: "https://veritaspress.com/products/reading-livys-rome"
+    officialUrl: "https://veritaspress.com/products/reading-livys-rome",
+    weight: 0.9
   },
   {
     id: "de-amicitia",
@@ -774,11 +776,15 @@ function renderGrid(books) {
       </a>
     ` : '';
 
-    // Price savings badge for grid view
+    // Price savings badge for grid view (including international shipping savings)
     let savingsHtml = '';
-    if (book.officialPrice && book.officialPrice > book.price) {
-      const savings = (book.officialPrice - book.price).toFixed(0);
-      savingsHtml = `<span class="savings-tag" style="font-size: 0.7rem; color: #00ff88; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.15); padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 136, 0.15);">省 $${savings}</span>`;
+    if (book.officialPrice) {
+      const shippingSavings = book.weight ? book.weight * 6 : 0;
+      const totalOfficialCost = book.officialPrice + shippingSavings;
+      if (totalOfficialCost > book.price) {
+        const savings = Math.round(totalOfficialCost - book.price);
+        savingsHtml = `<span class="savings-tag" style="font-size: 0.7rem; color: #00ff88; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.15); padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 136, 0.15);" title="含国际运费：比美国直邮到手总共省 $${(totalOfficialCost - book.price).toFixed(2)}">省 $${savings}</span>`;
+      }
     }
 
     card.innerHTML = `
@@ -1050,27 +1056,50 @@ function triggerViewBookDetail(bookId) {
   detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
   detailPrice.textContent = `$${book.price}`;
 
-  // Handle Official Price Comparison Display
+  // Handle Official Price Comparison Display (including international shipping savings)
   const detailComparisonBox = document.getElementById("detailComparisonBox");
   const detailOfficialPrice = document.getElementById("detailOfficialPrice");
+  const detailShippingRow = document.getElementById("detailShippingRow");
+  const detailWeightLabel = document.getElementById("detailWeightLabel");
+  const detailShippingCost = document.getElementById("detailShippingCost");
+  const detailOfficialTotal = document.getElementById("detailOfficialTotal");
   const detailSavings = document.getElementById("detailSavings");
   const detailOfficialUrl = document.getElementById("detailOfficialUrl");
 
-  if (book.officialPrice && book.officialPrice > book.price) {
-    if (detailComparisonBox) detailComparisonBox.style.display = "block";
-    if (detailOfficialPrice) detailOfficialPrice.textContent = `$${book.officialPrice.toFixed(2)}`;
-    
-    const savings = (book.officialPrice - book.price).toFixed(2);
-    const savingsPercent = Math.round(((book.officialPrice - book.price) / book.officialPrice) * 100);
-    if (detailSavings) detailSavings.textContent = `$${savings} (立省 ${savingsPercent}%)`;
-    
-    if (detailOfficialUrl) {
-      if (book.officialUrl) {
-        detailOfficialUrl.href = book.officialUrl;
-        detailOfficialUrl.style.display = "inline-flex";
+  if (book.officialPrice) {
+    const weight = book.weight || 0;
+    const shippingCost = weight * 6;
+    const totalOfficialCost = book.officialPrice + shippingCost;
+
+    if (totalOfficialCost > book.price) {
+      if (detailComparisonBox) detailComparisonBox.style.display = "block";
+      if (detailOfficialPrice) detailOfficialPrice.textContent = `$${book.officialPrice.toFixed(2)}`;
+      
+      // Handle shipping fee breakdown
+      if (weight > 0) {
+        if (detailShippingRow) detailShippingRow.style.display = "flex";
+        if (detailWeightLabel) detailWeightLabel.textContent = weight.toFixed(2);
+        if (detailShippingCost) detailShippingCost.textContent = `$${shippingCost.toFixed(2)}`;
       } else {
-        detailOfficialUrl.style.display = "none";
+        if (detailShippingRow) detailShippingRow.style.display = "none";
       }
+
+      if (detailOfficialTotal) detailOfficialTotal.textContent = `$${totalOfficialCost.toFixed(2)}`;
+
+      const savings = (totalOfficialCost - book.price).toFixed(2);
+      const savingsPercent = Math.round(((totalOfficialCost - book.price) / totalOfficialCost) * 100);
+      if (detailSavings) detailSavings.textContent = `$${savings} (立省 ${savingsPercent}%)`;
+      
+      if (detailOfficialUrl) {
+        if (book.officialUrl) {
+          detailOfficialUrl.href = book.officialUrl;
+          detailOfficialUrl.style.display = "inline-flex";
+        } else {
+          detailOfficialUrl.style.display = "none";
+        }
+      }
+    } else {
+      if (detailComparisonBox) detailComparisonBox.style.display = "none";
     }
   } else {
     if (detailComparisonBox) detailComparisonBox.style.display = "none";
