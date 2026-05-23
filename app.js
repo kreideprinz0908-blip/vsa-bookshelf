@@ -9,11 +9,11 @@ const INITIAL_BOOKS = [
     id: "latin-dict",
     title: "Latin and English Dictionary",
     author: "Bantam",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 9,
     condition: "Good",
     status: "Available",
-    notes: "拉丁语经典双语词典。Veritas Scholars Academy (VSA) Latin IV 课程推荐备考及阅读词汇工具书。",
+    notes: "拉丁语经典双语词典。Veritas Scholars Academy (VSA) Latin III 课程推荐备考及阅读词汇工具书。",
     videoUrl: "https://drive.google.com/file/d/1NlUvQYYQz4a5YskujWn5UXHbO3WKSvI-/view?usp=drivesdk",
     hue: 215
   },
@@ -21,11 +21,11 @@ const INITIAL_BOOKS = [
     id: "livy-rome",
     title: "Reading Livy's Rome",
     author: "Livy (Selections)",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 44,
     condition: "Very Good",
     status: "Available",
-    notes: "VSA Latin IV (Latin Readings: Classical Authors) 官方教材，含详尽注释与词汇指南。",
+    notes: "VSA Latin III (Latin Readings: Classical Authors) 官方教材，含详尽注释与词汇指南。",
     videoUrl: "https://drive.google.com/file/d/1x2drgvI6WG9BMG9ioepbocG7F4SWzZrB/view?usp=drivesdk",
     hue: 215
   },
@@ -33,11 +33,11 @@ const INITIAL_BOOKS = [
     id: "de-amicitia",
     title: "De Amicitia",
     author: "Cicero",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 19,
     condition: "Good",
     status: "Available",
-    notes: "西塞罗经典篇章《论友谊》拉丁文原版。VSA Latin IV 课程指定深度阅读文献。",
+    notes: "西塞罗经典篇章《论友谊》拉丁文原版。VSA Latin III 课程指定深度阅读文献。",
     videoUrl: "https://drive.google.com/file/d/1VMrsDKhdbIT74BWeCpbA-Ix0YeEBe6TJ/view?usp=drivesdk",
     hue: 215
   },
@@ -45,11 +45,11 @@ const INITIAL_BOOKS = [
     id: "latin-grammar",
     title: "New Latin Grammar",
     author: "Allen and Greenough",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 19,
     condition: "Very Good",
     status: "Available",
-    notes: "VSA Latin 系列高阶课程（Latin IV & AP Latin）通用语法参考书，拉丁语语法界权威圣经。",
+    notes: "VSA Latin 系列高阶课程通用语法参考书，拉丁语语法界权威圣经。",
     videoUrl: "https://drive.google.com/file/d/1aURuvLmipYB_QXj23yoRRRr6Z4xy91w3/view?usp=drivesdk",
     hue: 215
   },
@@ -57,11 +57,11 @@ const INITIAL_BOOKS = [
     id: "latin-poetry",
     title: "A Little Book of Latin Love Poetry",
     author: "Various Authors",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 25,
     condition: "Like New",
     status: "Available",
-    notes: "收录古罗马著名爱情诗篇。VSA Latin IV 及古典文学拓展阅读必选读物。",
+    notes: "收录古罗马著名爱情诗篇。VSA Latin III 及古典文学拓展阅读必选读物。",
     videoUrl: "https://drive.google.com/file/d/14xtF4oLfsFra4WQmAOapzeLgsWqtZ2s7/view?usp=drivesdk",
     hue: 215
   },
@@ -69,11 +69,11 @@ const INITIAL_BOOKS = [
     id: "ovid-metamorphoses",
     title: "Selections from Ovid's Metamorphoses",
     author: "Ovid",
-    category: "Latin IV: Classical Authors",
+    category: "Latin III: Classical Authors",
     price: 15,
     condition: "Good",
     status: "Available",
-    notes: "奥维德《变形记》拉英双语精选集。VSA Latin IV 课程核心研读原著。",
+    notes: "奥维德《变形记》拉英双语精选集。VSA Latin III 课程核心研读原著。",
     videoUrl: "https://drive.google.com/file/d/1Fg1soLj6cU-CLmW0VsHq3TXzsr6Dt8Xq/view?usp=drivesdk",
     hue: 215
   },
@@ -81,11 +81,11 @@ const INITIAL_BOOKS = [
     id: "caesar-virgil",
     title: "Caesar",
     author: "Julius Caesar",
-    category: "AP Latin / Latin V",
+    category: "AP Latin / Latin IV",
     price: 45,
     condition: "Very Good",
     status: "Available",
-    notes: "恺撒《高卢战记》高阶拉丁文研读本。VSA AP Latin (Latin V: Virgil & Caesar) 官方指定核心教材。",
+    notes: "恺撒《高卢战记》高阶拉丁文研读本。VSA AP Latin (Latin IV: Virgil & Caesar) 官方指定核心教材。",
     videoUrl: "https://drive.google.com/file/d/1VFeRh-6VhpDhIwwkUZrtLaYeG3M56Gk8/view?usp=drivesdk",
     hue: 240
   },
@@ -221,11 +221,11 @@ const INITIAL_BOOKS = [
     id: "divine-comedy-inferno",
     title: "The Divine Comedy: Inferno",
     author: "Dante Alighieri",
-    category: "Omnibus II & V: Primary",
+    category: "Omnibus II: Primary",
     price: 16,
     condition: "Very Good",
     status: "Reserved for Samuel",
-    notes: "但丁《神曲·地狱篇》英译注释版。VSA 核心大课 Omnibus II 与高阶人文学科 Omnibus V (神学/历史/经典文学) 的双重核心阅读原著。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
+    notes: "但丁《神曲·地狱篇》英译注释版。此书为 VSA Omnibus II (中世纪) 与 Omnibus V (高阶中世纪) 课程通用核心阅读原著（两节课均会使用）。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
     hue: 350
   },
   {
@@ -266,7 +266,7 @@ const INITIAL_BOOKS = [
     id: "jane-austen-miniatures",
     title: "Miniatures and Morals",
     author: "Peter J. Leithart",
-    category: "Literature Electives",
+    category: "Literature Elective: Jane Austen's Novel",
     price: 15,
     condition: "Like New",
     status: "Available",
@@ -278,7 +278,7 @@ const INITIAL_BOOKS = [
     id: "novare-science",
     title: "Novare Physical Science",
     author: "John D. Mays",
-    category: "Physical Science",
+    category: "Physical Science: Novare",
     price: 85,
     condition: "Very Good",
     status: "Reserved for Lucy",
@@ -300,7 +300,7 @@ const INITIAL_BOOKS = [
     id: "ap-biology-lab",
     title: "AP Biology Lab Manual & Companion",
     author: "TPS / Apologia",
-    category: "AP Biology",
+    category: "AP Biology (TPS)",
     price: 25,
     condition: "Good",
     status: "Available",
@@ -312,7 +312,7 @@ const INITIAL_BOOKS = [
     id: "ap-physics-1",
     title: "AP Physics 1 Student Text",
     author: "TPS",
-    category: "AP Physics 1",
+    category: "AP Physics 1 (TPS)",
     price: 39,
     condition: "Very Good",
     status: "Available",
@@ -324,7 +324,7 @@ const INITIAL_BOOKS = [
     id: "advanced-physics",
     title: "Exploring Creation with Advanced Physics (2nd Edition)",
     author: "Apologia",
-    category: "Advanced Physics",
+    category: "Physics II",
     price: 45,
     condition: "Very Good",
     status: "Available",
@@ -336,7 +336,7 @@ const INITIAL_BOOKS = [
     id: "advanced-physics-solutions",
     title: "Solutions and Tests for Exploring Creation with Advanced Physics",
     author: "Apologia",
-    category: "Advanced Physics",
+    category: "Physics II",
     price: 15,
     condition: "Very Good",
     status: "Available",
@@ -348,21 +348,20 @@ const INITIAL_BOOKS = [
 
 // --- Default Category Hue Map (for adding custom categories easily) ---
 const CATEGORY_HUES = {
-  "Latin IV: Classical Authors": 215,
-  "AP Latin / Latin V": 240,
+  "Latin III: Classical Authors": 215,
+  "AP Latin / Latin IV": 240,
   "Literature Transition": 195,
   "Logic II": 120,
   "Algebra II / Pre-Calculus": 280,
   "Omnibus II: Primary": 350,
-  "Omnibus II & V: Primary": 350,
   "Omnibus IV: Primary": 30,
   "Omnibus V: Primary": 45,
-  "Literature Electives": 320,
-  "Physical Science": 145,
+  "Literature Elective: Jane Austen's Novel": 320,
+  "Physical Science: Novare": 145,
   "Rhetoric II": 175,
-  "AP Biology": 90,
-  "AP Physics 1": 15,
-  "Advanced Physics": 160
+  "AP Biology (TPS)": 90,
+  "AP Physics 1 (TPS)": 15,
+  "Physics II": 160
 };
 
 
@@ -448,8 +447,20 @@ function loadState() {
   if (localData) {
     try {
       booksState = JSON.parse(localData);
-      // Auto-upgrade from legacy generic categories to VSA courses
-      const hasLegacy = booksState.some(b => b.category === "Latin" || b.category === "Science" || b.category === "Literature");
+      // Auto-upgrade from legacy categories to the latest refined course classifications
+      const hasLegacy = booksState.some(b => 
+        b.category === "Latin" || 
+        b.category === "Science" || 
+        b.category === "Literature" || 
+        b.category === "Latin IV: Classical Authors" || 
+        b.category === "AP Latin / Latin V" || 
+        b.category === "Omnibus II & V: Primary" || 
+        b.category === "Literature Electives" || 
+        b.category === "Physical Science" || 
+        b.category === "AP Physics 1" || 
+        b.category === "AP Biology" || 
+        b.category === "Advanced Physics"
+      );
       if (hasLegacy) {
         booksState = [...INITIAL_BOOKS];
         saveState();
