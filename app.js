@@ -343,6 +343,78 @@ const INITIAL_BOOKS = [
     notes: "高阶物理（Advanced Physics）配套答案与测试手册。包含书中所有 Module 课后习题、复习题的详细解答以及单元测试题与评分标准。",
     videoUrl: "https://drive.google.com/file/d/1SGYSBiDeUnoVZeUXbgTYzUDLkkcC_OZy/view?usp=drivesdk",
     hue: 160
+  },
+  {
+    id: "german-wie-gehts",
+    title: "Wie geht's? An Introductory German Course",
+    author: "Dieter Sevin",
+    category: "German II",
+    price: 300,
+    condition: "Very Good",
+    status: "Available",
+    notes: "经典德语入门教程教材。适合 German II (德语二) 课程及德语零基础入门研读，内容丰富详尽，成色良好。",
+    videoUrl: "https://drive.google.com/file/d/1r9cZ_e2lzsqsBNzKamTc_Y6Wvh77ZVB-/view?usp=drivesdk",
+    hue: 100
+  },
+  {
+    id: "german-vocab-10000",
+    title: "德语核心 10000 词汇",
+    author: "未知",
+    category: "German II",
+    price: 4,
+    condition: "Good",
+    status: "Available",
+    notes: "德语课外提升资料。专为德语二（German II）学习者课外德语能力提升设计，收录核心常用 10000 词汇，是极佳的课外辅助背诵工具书。注：此书为课外提升拓展资料。",
+    videoUrl: "https://drive.google.com/file/d/1GHLMPiD2OePHuMXTw4nfF5TrmxnHAXZ0/view?usp=drivesdk",
+    hue: 100
+  },
+  {
+    id: "english-vocab-22000",
+    title: "突破英文 22000 词",
+    author: "刘毅",
+    category: "Extracurricular English",
+    price: 3,
+    condition: "Good",
+    status: "Available",
+    notes: "课外英语提升必备词汇红宝书。收录高阶学术与日常核心 22000 词，适合用于英语课外阅读拓展、高难度词汇积累以及 SAT/TOEFL 备考。",
+    videoUrl: "https://drive.google.com/file/d/1kO_Zrx4wxnda1NBcmExTlzZZFpj5AxWW/view?usp=drivesdk",
+    hue: 200
+  },
+  {
+    id: "iew-grammar-6",
+    title: "IEW 6: Structure and Style for Students",
+    author: "Institute for Excellence in Writing",
+    category: "Grammar and Writing 6",
+    price: 27,
+    condition: "Fair",
+    status: "Available",
+    notes: "IEW 写作与语法系列第六册学生版。本教材用于系统性培养英文写作架构与修辞表达。注：缺了几页封面和尾页，但里面核心内容完好无损，完全不影响正常学习与阅读。",
+    videoUrl: "https://drive.google.com/file/d/1qm7XxWu-aOxP2BNVPA_pVdInZpetfrbX/view?usp=drivesdk",
+    hue: 330
+  },
+  {
+    id: "toefl-practice",
+    title: "TOEFL Practice Tests & Guides",
+    author: "Official ETS Guide",
+    category: "TOEFL Preparation",
+    price: 7,
+    condition: "Very Good",
+    status: "Available",
+    notes: "托福官方备考真题与练习指南。含丰富听力、阅读、写作及口语模拟训练。特惠福利：买二送三（购买此本即送三本配套备考练习册）！",
+    videoUrl: "https://drive.google.com/file/d/1MSmWAmxbNZwR3vcjaJSt96KnMfUbaCr3/view?usp=drivesdk",
+    hue: 180
+  },
+  {
+    id: "sat-real-tests",
+    title: "SAT Real Practice Tests (5-Set Bundle)",
+    author: "College Board",
+    category: "SAT Preparation",
+    price: 20,
+    condition: "Very Good",
+    status: "Available",
+    notes: "SAT 历年全套官方备考真题纸质版。本商品共包含 5 套完整真题，单套售价 $20，打包购买全部 5 套尊享特惠价仅需 $90！适合冲刺备考练习使用。",
+    videoUrl: "https://drive.google.com/file/d/1jIo3Cx-QHZ-687A2i2U_1xxUxxDlzg2g/view?usp=drivesdk",
+    hue: 180
   }
 ];
 
@@ -361,7 +433,12 @@ const CATEGORY_HUES = {
   "Rhetoric II": 175,
   "AP Biology (TPS)": 90,
   "AP Physics 1 (TPS)": 15,
-  "Physics II": 160
+  "Physics II": 160,
+  "German II": 100,
+  "Extracurricular English": 200,
+  "Grammar and Writing 6": 330,
+  "TOEFL Preparation": 180,
+  "SAT Preparation": 180
 };
 
 
@@ -460,7 +537,7 @@ function loadState() {
         b.category === "AP Physics 1" || 
         b.category === "AP Biology" || 
         b.category === "Advanced Physics"
-      );
+      ) || !booksState.some(b => b.id === "german-wie-gehts");
       if (hasLegacy) {
         booksState = [...INITIAL_BOOKS];
         saveState();
