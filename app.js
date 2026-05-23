@@ -14,7 +14,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "拉丁语经典双语词典。Veritas Scholars Academy (VSA) Latin IV 课程推荐备考及阅读词汇工具书。",
-    videoUrl: "https://drive.google.com/file/d/1NVvIVEMAtUFwxVqeqTXmxviHFHJbouzg/view?usp=drive_link",
+    videoUrl: "https://drive.google.com/file/d/1NlUvQYYQz4a5YskujWn5UXHbO3WKSvI-/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -26,6 +26,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "VSA Latin IV (Latin Readings: Classical Authors) 官方教材，含详尽注释与词汇指南。",
+    videoUrl: "https://drive.google.com/file/d/1x2drgvI6WG9BMG9ioepbocG7F4SWzZrB/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -37,6 +38,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "西塞罗经典篇章《论友谊》拉丁文原版。VSA Latin IV 课程指定深度阅读文献。",
+    videoUrl: "https://drive.google.com/file/d/1VMrsDKhdbIT74BWeCpbA-Ix0YeEBe6TJ/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -48,6 +50,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "VSA Latin 系列高阶课程（Latin IV & AP Latin）通用语法参考书，拉丁语语法界权威圣经。",
+    videoUrl: "https://drive.google.com/file/d/1aURuvLmipYB_QXj23yoRRRr6Z4xy91w3/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -59,6 +62,7 @@ const INITIAL_BOOKS = [
     condition: "Like New",
     status: "Available",
     notes: "收录古罗马著名爱情诗篇。VSA Latin IV 及古典文学拓展阅读必选读物。",
+    videoUrl: "https://drive.google.com/file/d/14xtF4oLfsFra4WQmAOapzeLgsWqtZ2s7/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -70,6 +74,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "奥维德《变形记》拉英双语精选集。VSA Latin IV 课程核心研读原著。",
+    videoUrl: "https://drive.google.com/file/d/1Fg1soLj6cU-CLmW0VsHq3TXzsr6Dt8Xq/view?usp=drivesdk",
     hue: 215
   },
   {
@@ -81,6 +86,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "恺撒《高卢战记》高阶拉丁文研读本。VSA AP Latin (Latin V: Virgil & Caesar) 官方指定核心教材。",
+    videoUrl: "https://drive.google.com/file/d/1VFeRh-6VhpDhIwwkUZrtLaYeG3M56Gk8/view?usp=drivesdk",
     hue: 240
   },
   {
@@ -92,6 +98,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "《简·爱》英文原版。VSA Secondary 级别 Literature Transition (文学过渡课) 核心阅读小说。",
+    videoUrl: "https://drive.google.com/file/d/15PyGPR-_pCplyneMpr8pC-VRQA069V0e/view?usp=drivesdk",
     hue: 195
   },
   {
@@ -103,6 +110,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "《红花侠》原版。VSA Literature Transition 课程核心小说，情节引人入胜，成色良好。",
+    videoUrl: "https://drive.google.com/file/d/1vi2EY_5eK0fk-z1hQ2-0GyMQwjpLgdZo/view?usp=drivesdk",
     hue: 195
   },
   {
@@ -114,6 +122,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "莎士比亚戏剧《暴风雨》。VSA Literature Transition 经典文学赏析单元指定阅读版本。",
+    videoUrl: "https://drive.google.com/file/d/1fUMRt8SnEGIyEHRS8xOWf3-PwgYtvGfR/view?usp=drivesdk",
     hue: 195
   },
   {
@@ -125,6 +134,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "《杀死一只知更鸟》英文原版。VSA Literature Transition 指定必读现代经典文学。",
+    videoUrl: "https://drive.google.com/file/d/1pChakdamsmM-LTkf8m0lhPPcrYzs4sti/view?usp=drivesdk",
     hue: 195
   },
   {
@@ -136,6 +146,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "《论证构建者》学生版。VSA Logic II (逻辑学二) 官方选用教材，用于培养高阶论证与说服力技能。",
+    videoUrl: "https://drive.google.com/file/d/1z9sUPvjcyGkEdUQhYxeSWvIpbO3iapio/view?usp=drivesdk",
     hue: 120
   },
   {
@@ -147,6 +158,7 @@ const INITIAL_BOOKS = [
     condition: "Like New",
     status: "Available",
     notes: "《论证构建者》教师参考版。VSA Logic II 课程配套辅导用书，带完整习题解答与教学参考。",
+    videoUrl: "https://drive.google.com/file/d/1Vc2C6-TqafX4qjhYvfG9kpeI_llki5du/view?usp=drivesdk",
     hue: 120
   },
   {
@@ -158,6 +170,7 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Available",
     notes: "《思维工具箱》。VSA 逻辑学（Logic I & II）经典参考书，极富趣味性的逻辑思维训练读本。",
+    videoUrl: "https://drive.google.com/file/d/1RxIJm3-yiurHbjsMDajnaaOOFVU3p38P/view?usp=drivesdk",
     hue: 120
   },
   {
@@ -224,6 +237,7 @@ const INITIAL_BOOKS = [
     condition: "Like New",
     status: "Available",
     notes: "《屋大维恺撒的世界》。VSA 核心人文大课 Omnibus IV (古代世界史与文学) 指定必读历史文献叙事书。",
+    videoUrl: "https://drive.google.com/file/d/1RaGFAX39QOQNHDBSJBHgdKzd0DAGHriD/view?usp=drivesdk",
     hue: 30
   },
   {
@@ -257,6 +271,7 @@ const INITIAL_BOOKS = [
     condition: "Like New",
     status: "Available",
     notes: "《微缩模型与道德》。简·奥斯汀文学世界与古典叙事分析。VSA 高阶文学选修/小说写作/人文学科经典伴读推荐书目。",
+    videoUrl: "https://drive.google.com/file/d/1amkVYbUJn-Jq-XIfRU7cfTiJAWn0Xw9d/view?usp=drivesdk",
     hue: 320
   },
   {
@@ -280,6 +295,54 @@ const INITIAL_BOOKS = [
     status: "Reserved for Samuel",
     notes: "《修辞学第二册》高阶学术教材。VSA Rhetoric II (修辞学二) 官方选用教材，成色极佳。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
     hue: 175
+  },
+  {
+    id: "ap-biology-lab",
+    title: "AP Biology Lab Manual & Companion",
+    author: "TPS / Apologia",
+    category: "AP Biology",
+    price: 25,
+    condition: "Good",
+    status: "Available",
+    notes: "AP 生物课程配套实验指导书及部分基础耗材工具包。适合 The Potter's School (TPS) 或同等 AP 生物课实验部分使用。",
+    videoUrl: "https://drive.google.com/file/d/15er0vjxNJYPVZ1380W0nsQWIw48Vuh0K/view?usp=drivesdk",
+    hue: 90
+  },
+  {
+    id: "ap-physics-1",
+    title: "AP Physics 1 Student Text",
+    author: "TPS",
+    category: "AP Physics 1",
+    price: 39,
+    condition: "Very Good",
+    status: "Available",
+    notes: "AP 物理 1 核心教材与习题册。适合 TPS (The Potter's School) 课前预习、同步提升及备考使用，讲解详尽。",
+    videoUrl: "https://drive.google.com/file/d/1DZE27CQSCJvvV8_IwzTV0SeEPjHBZSmG/view?usp=drivesdk",
+    hue: 15
+  },
+  {
+    id: "advanced-physics",
+    title: "Exploring Creation with Advanced Physics (2nd Edition)",
+    author: "Apologia",
+    category: "Advanced Physics",
+    price: 45,
+    condition: "Very Good",
+    status: "Available",
+    notes: "Apologia 经典高阶物理教材。深入探讨高阶物理定理，适合完成基础物理及三角学后的高阶理科学生或 VSA/TPS 课程选修。",
+    videoUrl: "https://drive.google.com/file/d/1ISKH8rnWZ_-6P7mx32djIQgj8pPpKpBv/view?usp=drivesdk",
+    hue: 160
+  },
+  {
+    id: "advanced-physics-solutions",
+    title: "Solutions and Tests for Exploring Creation with Advanced Physics",
+    author: "Apologia",
+    category: "Advanced Physics",
+    price: 15,
+    condition: "Very Good",
+    status: "Available",
+    notes: "高阶物理（Advanced Physics）配套答案与测试手册。包含书中所有 Module 课后习题、复习题的详细解答以及单元测试题与评分标准。",
+    videoUrl: "https://drive.google.com/file/d/1SGYSBiDeUnoVZeUXbgTYzUDLkkcC_OZy/view?usp=drivesdk",
+    hue: 160
   }
 ];
 
@@ -296,7 +359,10 @@ const CATEGORY_HUES = {
   "Omnibus V: Primary": 45,
   "Literature Electives": 320,
   "Physical Science": 145,
-  "Rhetoric II": 175
+  "Rhetoric II": 175,
+  "AP Biology": 90,
+  "AP Physics 1": 15,
+  "Advanced Physics": 160
 };
 
 
