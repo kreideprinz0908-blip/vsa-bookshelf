@@ -871,12 +871,8 @@ function setupEventListeners() {
 
   // Reopen academic profile modal
   const promoModal = document.getElementById("promoModal");
-  const aboutMeHeaderBtn = document.getElementById("aboutMeHeaderBtn");
   const aboutMeSidebarBtn = document.getElementById("aboutMeSidebarBtn");
 
-  if (aboutMeHeaderBtn && promoModal) {
-    aboutMeHeaderBtn.addEventListener("click", () => openModal(promoModal));
-  }
   if (aboutMeSidebarBtn && promoModal) {
     aboutMeSidebarBtn.addEventListener("click", () => openModal(promoModal));
   }
