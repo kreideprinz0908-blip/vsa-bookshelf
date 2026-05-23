@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chris's Book Sale | 二手书交易平台</title>
+  <meta name="description" content="Chris Gu 的高中二手书交易平台。涵盖 AP 物理 C、经典拉丁语、微积分、Omnibus 等优质学术书籍。">
+  <meta name="author" content="Chris Gu">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Style Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Hero / Glowing Header -->
+  <header class="app-header">
+    <div class="header-glow"></div>
+    <div class="container header-container">
+      <div class="brand-section">
+        <div class="logo-badge">📚</div>
+        <div>
+          <h1 class="brand-title">Chris's Book Sale</h1>
+          <p class="brand-subtitle">高中二手书交易平台</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="adminToggleBtn" class="btn btn-secondary btn-icon" title="管理面板" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span>管理面板</span>
+        </button>
+        <button id="contactBtn" class="btn btn-primary btn-glow">
+          <span>联系我订书</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="container app-body">
+    
+    <!-- Sidebar: Statistics & Meta Info -->
+    <aside class="app-sidebar">
+      <div class="sidebar-card intro-card">
+        <div class="avatar-container">
+          <div class="avatar-ring"></div>
+          <div class="avatar-emoji">🎒</div>
+        </div>
+        <h3 class="intro-title">Zifeng Gu (Chris)</h3>
+        <p class="intro-desc">
+          这里整理出我高中时用过的优质课本、拉丁文经典、文学读物及逻辑修辞学书籍。
+        </p>
+        <div class="intro-badges">
+          <span class="badge badge-accent">高中课本</span>
+          <span class="badge badge-info">学术备考</span>
+        </div>
+      </div>
+
+      <!-- Live Statistics Grid -->
+      <div class="sidebar-card stats-card">
+        <h3 class="card-title">📚 书架状态</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-num" id="statTotalBooks">0</div>
+            <div class="stat-label">总上架数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num text-success" id="statAvailable">0</div>
+            <div class="stat-label">在售 (Available)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num text-warning" id="statReserved">0</div>
+            <div class="stat-label">已售出</div>
+          </div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar-label">
+            <span>售出比例</span>
+            <span id="statPercent">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div id="statProgressBar" class="progress-bar-fill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Info / Vibe Notice -->
+      <div class="sidebar-card notice-card">
+        <h4 class="notice-title">💡 交易须知</h4>
+        <ul class="notice-list">
+          <li><strong>书籍状态</strong>：标记为 <strong>Lucy</strong> 和 <strong>Samuel</strong> 的书已被买走。若其他人需要，可直接找他们两人购买。其余书籍均开放交易！</li>
+          <li><strong>关于标价</strong>：标价均以美元 (USD) 为参考。如果你有多选，随时可以联系我沟通打包优惠。</li>
+          <li><strong>如何交易</strong>：支持面对面交接、邮寄或者约定地点交付，详情点击右上角 <strong>“联系我订书”</strong> 沟通。</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Panel: Filters, Search, Book Grid -->
+    <section class="app-main">
+      
+      <!-- Filter Control Panel -->
+      <div class="control-panel glass">
+        <!-- Search Bar -->
+        <div class="search-box">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchInput" placeholder="搜索书名、作者、课程或标签..." aria-label="搜索书目">
+          <button id="clearSearchBtn" class="clear-btn" aria-label="清除搜索" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <!-- Course Category Filters -->
+        <div class="filter-wrapper">
+          <span class="filter-label">按课程过滤：</span>
+          <div class="filter-pills" id="courseFiltersContainer">
+            <!-- Dynamic Category Pills will be injected here -->
+            <button class="pill active" data-category="all">
+              <span>全部</span>
+              <span class="pill-count" id="countAll">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Status & Sorting Filters -->
+        <div class="secondary-filters">
+          <div class="sub-filter-group">
+            <span class="filter-label">状态：</span>
+            <select id="statusFilter" class="select-input">
+              <option value="all">所有状态</option>
+              <option value="available">仅看在售 (Available)</option>
+              <option value="reserved">已被购买 (Reserved/Sold)</option>
+            </select>
+          </div>
+
+          <div class="sub-filter-group">
+            <span class="filter-label">排序：</span>
+            <select id="sortSelect" class="select-input">
+              <option value="default">默认顺序</option>
+              <option value="price-asc">价格：低到高</option>
+              <option value="price-desc">价格：高到低</option>
+              <option value="title-asc">书名：A-Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book Grid -->
+      <div class="book-grid" id="bookGrid">
+        <!-- Dynamic Book Cards will be injected here -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>正在加载精品书架书目...</p>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-emoji">🔍</div>
+        <h3>没有找到符合条件的书籍</h3>
+        <p>试着修改搜索词，或者换个课程分类看看吧！</p>
+        <button id="resetFiltersBtn" class="btn btn-secondary">重置全部过滤条件</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="container footer-content">
+      <p>© 2026 Chris Gu. All Rights Reserved. Built with Antigravity AI Pairs.</p>
+      <p class="faith-quote">“凭信心，不凭眼见。” — [[5.10 凭信心不凭眼见]]</p>
+    </div>
+  </footer>
+
+  <!-- MODAL: Contact Information -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-content glass animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title">🤝 联系 Chris 交易图书</h3>
+        <button class="modal-close" data-close-modal="contactModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="contact-intro">可以直接通过微信或邮箱联系我，提供你想要的书名即可。支持面对面交接、邮寄或约定地点交付。</p>
+        
+        <div class="contact-methods">
+          <div class="contact-card">
+            <div class="contact-icon wechat">💬</div>
+            <div class="contact-info">
+              <span class="contact-label">微信号 (WeChat ID)</span>
+              <span class="contact-value" id="wechatId">zf15818717707</span>
+            </div>
+            <button class="btn btn-secondary btn-sm copy-btn" data-clipboard="wechatId">复制</button>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon email">✉️</div>
+            <div class="contact-info">
+              <span class="contact-label">个人邮箱 (Email)</span>
+              <span class="contact-value" id="emailAddr">kreideprinz0908@gmail.com</span>
+            </div>
+            <button class="btn btn-secondary btn-sm copy-btn" data-clipboard="emailAddr">复制</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal="contactModal">返回书架</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Admin Panel / CRUD Operations -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-content glass admin-modal-width animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title">🛠️ 书目后台管理系统</h3>
+        <button class="modal-close" data-close-modal="adminModal">&times;</button>
+      </div>
+      <div class="modal-body admin-body-flex">
+        
+        <!-- Left Side: Form for Add/Edit -->
+        <div class="admin-form-column">
+          <h4 class="admin-section-title" id="formActionTitle">📖 添加新书目</h4>
+          <form id="bookForm">
+            <input type="hidden" id="editBookId">
+            
+            <div class="form-group">
+              <label for="bookTitleInput">书名 <span class="required">*</span></label>
+              <input type="text" id="bookTitleInput" class="form-control" placeholder="请输入完整的英文或中文书名" required>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="bookAuthorInput">作者</label>
+                <input type="text" id="bookAuthorInput" class="form-control" placeholder="作者姓名">
+              </div>
+              <div class="form-group">
+                <label for="bookPriceInput">定价 (USD) <span class="required">*</span></label>
+                <input type="number" id="bookPriceInput" class="form-control" min="0" step="1" placeholder="价格" required>
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="bookCategorySelect">课程分类 <span class="required">*</span></label>
+                <select id="bookCategorySelect" class="form-control" required>
+                  <!-- Populated dynamically via JS -->
+                </select>
+                <div class="category-input-toggle">
+                  <a href="#" id="toggleCustomCategoryLink">或新建分类</a>
+                </div>
+              </div>
+              <div class="form-group" id="customCategoryGroup" style="display: none;">
+                <label for="bookCustomCategoryInput">新分类名称</label>
+                <input type="text" id="bookCustomCategoryInput" class="form-control" placeholder="例如 AP Physics C">
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="bookStatusSelect">书籍状态</label>
+                <select id="bookStatusSelect" class="form-control">
+                  <option value="Available">Available (在售)</option>
+                  <option value="Reserved for Lucy">Reserved for Lucy (Lucy 已买走)</option>
+                  <option value="Reserved for Samuel">Reserved for Samuel (Samuel 已买走)</option>
+                  <option value="Sold">Sold (已售出)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="bookConditionSelect">成色状况</label>
+                <select id="bookConditionSelect" class="form-control">
+                  <option value="Like New">Like New (几乎全新)</option>
+                  <option value="Very Good">Very Good (非常优良)</option>
+                  <option value="Good">Good (状态良好)</option>
+                  <option value="Fair">Fair (有笔记/折页痕迹)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="bookNotesInput">备注 / 课程对应说明</label>
+              <textarea id="bookNotesInput" class="form-control" rows="2" placeholder="例如：Old Version，包含高品质习题集..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>封面视觉主题配色 (HSL Primary Hue)</label>
+              <div class="hue-selector-container">
+                <input type="range" id="bookHueSlider" class="hue-slider" min="0" max="360" value="210">
+                <div class="hue-preview" id="huePreviewBlock"></div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="cancelFormBtn" style="display: none;">取消编辑</button>
+              <button type="submit" class="btn btn-primary" id="saveBookBtn">保存书目</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Side: Live Cover Preview & Database Tools -->
+        <div class="admin-tools-column">
+          <h4 class="admin-section-title">✨ 封面实时预览</h4>
+          <div class="cover-preview-wrapper">
+            <!-- A mockup of the interactive 3D cover -->
+            <div class="book-card-preview-only">
+              <div class="book-cover-3d" id="previewCover" style="background: linear-gradient(135deg, hsl(210, 50%, 40%), hsl(210, 50%, 20%));">
+                <div class="book-spine"></div>
+                <div class="book-cover-content">
+                  <div class="cover-course" id="previewCoverCourse">LATIN</div>
+                  <div class="cover-title" id="previewCoverTitle">Book Title Preview</div>
+                  <div class="cover-author" id="previewCoverAuthor">Author Name</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="admin-section-title" style="margin-top: 2rem;">💾 数据备份与恢复</h4>
+          <p class="admin-help-text">所有的修改实时自动保存在本地浏览器的 LocalStorage 中。你可以点击下方按钮复制或导入 JSON 文件来确保数据永久有效！</p>
+          
+          <div class="data-buttons">
+            <button class="btn btn-secondary btn-sm" id="exportDataBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>导出 JSON 数据</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" id="importDataBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span>导入 JSON 数据</span>
+            </button>
+            <button class="btn btn-danger-outline btn-sm" id="resetDefaultBtn">
+              <span>恢复初始默认数据</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal="adminModal">关闭管理后台</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Data Import/Export Prompt -->
+  <div class="modal-overlay" id="dataModal">
+    <div class="modal-content glass animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title" id="dataModalTitle">💾 数据管理</h3>
+        <button class="modal-close" data-close-modal="dataModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="dataModalDesc" class="admin-help-text">请在下方文本框中复制你的数据，或将要导入的 JSON 粘贴进去：</p>
+        <textarea id="dataTextarea" class="form-control font-code" rows="12" style="font-size: 12px; margin-top: 10px;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal="dataModal">取消</button>
+        <button class="btn btn-primary" id="saveDataActionBtn">执行导入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ripple Toast Alert for Micro-feedback -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JS Links -->
+  <script src="app.js"></script>
+</body>
+</html>
