@@ -131,7 +131,7 @@ const INITIAL_BOOKS = [
     notes: "《红花侠》原版。VSA Literature Transition 课程核心小说，情节引人入胜，成色良好。",
     videoUrl: "https://drive.google.com/file/d/1vi2EY_5eK0fk-z1hQ2-0GyMQwjpLgdZo/view?usp=drivesdk",
     hue: 195,
-    officialPrice: 8.99,
+    officialPrice: 11.95,
     officialUrl: "https://veritaspress.com/products/the-scarlet-pimpernel",
     weight: 0.45
   },
@@ -190,7 +190,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《论证构建者》教师参考版。VSA Logic II 课程配套辅导用书，带完整习题解答与教学参考。",
     videoUrl: "https://drive.google.com/file/d/1Vc2C6-TqafX4qjhYvfG9kpeI_llki5du/view?usp=drivesdk",
-    hue: 120
+    hue: 120,
+    officialPrice: 29.95,
+    officialUrl: "https://veritaspress.com/products/argument-builder-teacher-edition",
+    weight: 1.25
   },
   {
     id: "thinking-toolbox",
@@ -202,7 +205,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "《思维工具箱》。VSA 逻辑学（Logic I & II）经典参考书，极富趣味性的逻辑思维训练读本。",
     videoUrl: "https://drive.google.com/file/d/1RxIJm3-yiurHbjsMDajnaaOOFVU3p38P/view?usp=drivesdk",
-    hue: 120
+    hue: 120,
+    officialPrice: 35.00,
+    officialUrl: "https://veritaspress.com/products/the-thinking-toolbox",
+    weight: 1.1
   },
   {
     id: "algebra-trig",
@@ -213,7 +219,10 @@ const INITIAL_BOOKS = [
     condition: "Fair",
     status: "Reserved for Lucy",
     notes: "Old Version. 经典代数与三角学。VSA Algebra II / Pre-Calculus 课程官方选用教材。此书已被 Lucy 买走，如有需要可直接联系 Lucy 购买。",
-    hue: 280
+    hue: 280,
+    officialPrice: 120.00,
+    officialUrl: "https://www.cengage.com/c/algebra-and-trigonometry-10e-larson/9781337271172/",
+    weight: 5.5
   },
   {
     id: "eusebius-omnibus",
@@ -224,7 +233,10 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Reserved for Lucy",
     notes: "Different Version. 尤西比乌斯《教会史》经典英译本。VSA 核心综合大课 Omnibus II (中世纪史诗/神学) 官方指定研读 primary source 第一单元丛书。此书已被 Lucy 买走，如有需要可直接联系 Lucy 购买。",
-    hue: 350
+    hue: 350,
+    officialPrice: 29.95,
+    officialUrl: "https://veritaspress.com/products/eusebius-the-church-history",
+    weight: 0.8
   },
   {
     id: "confessions",
@@ -235,7 +247,10 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Reserved for Lucy",
     notes: "圣奥古斯丁《忏悔录》经典英译注释本。VSA 核心综合大课 Omnibus II 的核心初级阅读文献。此书已被 Lucy 买走，如有需要可直接联系 Lucy 购买。",
-    hue: 350
+    hue: 350,
+    officialPrice: 16.00,
+    officialUrl: "https://veritaspress.com/products/confessions",
+    weight: 0.6
   },
   {
     id: "rule-benedict",
@@ -246,7 +261,10 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Reserved for Lucy",
     notes: "《圣本笃会规》。VSA 核心大课 Omnibus II 原版中古神学与制度核心阅读书籍。此书已被 Lucy 买走，如有需要可直接联系 Lucy 购买。",
-    hue: 350
+    hue: 350,
+    officialPrice: 3.95,
+    officialUrl: "https://veritaspress.com/products/rb-1980-the-rule-of-st-benedict",
+    weight: 0.2
   },
   {
     id: "divine-comedy-inferno",
@@ -257,7 +275,10 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Reserved for Samuel",
     notes: "但丁《神曲·地狱篇》英译注释版。此书为 VSA Omnibus II (中世纪) 与 Omnibus V (高阶中世纪) 课程通用核心阅读原著（两节课均会使用）。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
-    hue: 350
+    hue: 350,
+    officialPrice: 17.95,
+    officialUrl: "https://veritaspress.com/products/divine-comedy-inferno",
+    weight: 0.8
   },
   {
     id: "augustus-world",
