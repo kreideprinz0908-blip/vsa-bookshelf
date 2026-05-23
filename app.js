@@ -15,7 +15,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "拉丁语经典双语词典。Veritas Scholars Academy (VSA) Latin III 课程推荐备考及阅读词汇工具书。",
     videoUrl: "https://drive.google.com/file/d/1NlUvQYYQz4a5YskujWn5UXHbO3WKSvI-/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 9.99,
+    officialUrl: "https://veritaspress.com/products/the-new-college-latin-english-dictionary"
   },
   {
     id: "livy-rome",
@@ -27,7 +29,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "VSA Latin III (Latin Readings: Classical Authors) 官方教材，含详尽注释与词汇指南。",
     videoUrl: "https://drive.google.com/file/d/1x2drgvI6WG9BMG9ioepbocG7F4SWzZrB/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 48.00,
+    officialUrl: "https://veritaspress.com/products/reading-livys-rome"
   },
   {
     id: "de-amicitia",
@@ -770,6 +774,13 @@ function renderGrid(books) {
       </a>
     ` : '';
 
+    // Price savings badge for grid view
+    let savingsHtml = '';
+    if (book.officialPrice && book.officialPrice > book.price) {
+      const savings = (book.officialPrice - book.price).toFixed(0);
+      savingsHtml = `<span class="savings-tag" style="font-size: 0.7rem; color: #00ff88; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.15); padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 136, 0.15);">省 $${savings}</span>`;
+    }
+
     card.innerHTML = `
       ${adminOverlay}
 
@@ -803,7 +814,10 @@ function renderGrid(books) {
       <div class="book-card-footer">
         <div class="book-price-box">
           <span class="price-label">标价</span>
-          <span class="price-value">$${book.price}</span>
+          <div style="display: flex; align-items: center;">
+            <span class="price-value">$${book.price}</span>
+            ${savingsHtml}
+          </div>
         </div>
         <span class="status-pill ${statusClass}">
           <span class="status-dot"></span>
@@ -1035,6 +1049,32 @@ function triggerViewBookDetail(bookId) {
   detailAuthor.textContent = book.author || "未知";
   detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
   detailPrice.textContent = `$${book.price}`;
+
+  // Handle Official Price Comparison Display
+  const detailComparisonBox = document.getElementById("detailComparisonBox");
+  const detailOfficialPrice = document.getElementById("detailOfficialPrice");
+  const detailSavings = document.getElementById("detailSavings");
+  const detailOfficialUrl = document.getElementById("detailOfficialUrl");
+
+  if (book.officialPrice && book.officialPrice > book.price) {
+    if (detailComparisonBox) detailComparisonBox.style.display = "block";
+    if (detailOfficialPrice) detailOfficialPrice.textContent = `$${book.officialPrice.toFixed(2)}`;
+    
+    const savings = (book.officialPrice - book.price).toFixed(2);
+    const savingsPercent = Math.round(((book.officialPrice - book.price) / book.officialPrice) * 100);
+    if (detailSavings) detailSavings.textContent = `$${savings} (立省 ${savingsPercent}%)`;
+    
+    if (detailOfficialUrl) {
+      if (book.officialUrl) {
+        detailOfficialUrl.href = book.officialUrl;
+        detailOfficialUrl.style.display = "inline-flex";
+      } else {
+        detailOfficialUrl.style.display = "none";
+      }
+    }
+  } else {
+    if (detailComparisonBox) detailComparisonBox.style.display = "none";
+  }
 
   // Status Pill Configuration
   detailStatusPill.className = "status-pill"; // Reset classes

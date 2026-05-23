@@ -317,6 +317,24 @@
             </span>
           </div>
 
+          <!-- Price Comparison & Savings verified badge -->
+          <div class="detail-comparison-box" id="detailComparisonBox" style="display: none; margin-top: 1rem; padding: 0.85rem; border-radius: var(--radius-md); background: rgba(0, 255, 136, 0.04); border: 1px solid rgba(0, 255, 136, 0.15); box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.02);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.8rem; color: var(--color-text-muted);">
+              <span>🏫 官方原版参考价:</span>
+              <span id="detailOfficialPrice" style="text-decoration: line-through; font-weight: 500;">$0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; font-size: 0.9rem; color: #00ff88; font-weight: 600; text-shadow: 0 0 8px rgba(0, 255, 136, 0.25);">
+              <span>🎉 本店省钱差价 (Savings):</span>
+              <span id="detailSavings">$0</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 0.4rem; display: flex; align-items: center; justify-content: space-between;">
+              <span>验证链接：</span>
+              <a href="#" id="detailOfficialUrl" target="_blank" style="color: var(--color-accent); text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; font-weight: 500; transition: color var(--transition-fast);">
+                <span>学校官网 / 官方比价页面 ➔</span>
+              </a>
+            </div>
+          </div>
+
           <div class="detail-buttons" id="detailButtonsContainer">
             <!-- Dynamic Buttons will be populated via app.js -->
           </div>
