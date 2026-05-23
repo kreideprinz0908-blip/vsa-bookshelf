@@ -361,7 +361,10 @@ const INITIAL_BOOKS = [
     condition: "Very Good",
     status: "Reserved for Samuel",
     notes: "《修辞学第二册》高阶学术教材。VSA Rhetoric II (修辞学二) 官方选用教材，成色极佳。此书已被 Samuel 买走，如有需要可直接联系 Samuel 购买。",
-    hue: 175
+    hue: 175,
+    officialPrice: 49.00,
+    officialUrl: "https://classicalacademicpress.com/products/rhetoric-alive-book-1-principles-of-persuasion",
+    weight: 2.38
   },
   {
     id: "ap-biology-lab",
@@ -373,7 +376,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "AP 生物课程配套实验指导书及部分基础耗材工具包。适合 The Potter's School (TPS) 或同等 AP 生物课实验部分使用。",
     videoUrl: "https://drive.google.com/file/d/15er0vjxNJYPVZ1380W0nsQWIw48Vuh0K/view?usp=drivesdk",
-    hue: 90
+    hue: 90,
+    officialPrice: 35.00,
+    officialUrl: "https://apcentral.collegeboard.org/courses/ap-biology/classroom-resources/investigative-labs-inquiry-based-approach",
+    weight: 1.5
   },
   {
     id: "ap-physics-1",
@@ -385,7 +391,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "AP 物理 1 核心教材与习题册。适合 TPS (The Potter's School) 课前预习、同步提升及备考使用，讲解详尽。",
     videoUrl: "https://drive.google.com/file/d/1DZE27CQSCJvvV8_IwzTV0SeEPjHBZSmG/view?usp=drivesdk",
-    hue: 15
+    hue: 15,
+    officialPrice: 45.00,
+    officialUrl: "https://at-tps.org",
+    weight: 1.8
   },
   {
     id: "advanced-physics",
@@ -397,7 +406,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "Apologia 经典高阶物理教材。深入探讨高阶物理定理，适合完成基础物理及三角学后的高阶理科学生或 VSA/TPS 课程选修。",
     videoUrl: "https://drive.google.com/file/d/1ISKH8rnWZ_-6P7mx32djIQgj8pPpKpBv/view?usp=drivesdk",
-    hue: 160
+    hue: 160,
+    officialPrice: 93.00,
+    officialUrl: "https://www.apologia.com/product/exploring-creation-with-advanced-physics-2nd-edition-student-textbook/",
+    weight: 5.0
   },
   {
     id: "advanced-physics-solutions",
@@ -409,7 +421,10 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "高阶物理（Advanced Physics）配套答案与测试手册。包含书中所有 Module 课后习题、复习题的详细解答以及单元测试题与评分标准。",
     videoUrl: "https://drive.google.com/file/d/1SGYSBiDeUnoVZeUXbgTYzUDLkkcC_OZy/view?usp=drivesdk",
-    hue: 160
+    hue: 160,
+    officialPrice: 22.95,
+    officialUrl: "https://www.apologia.com/product/solutions-and-tests-for-exploring-creation-with-advanced-physics-2nd-edition/",
+    weight: 1.05
   },
   {
     id: "german-wie-gehts",
