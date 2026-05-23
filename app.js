@@ -45,7 +45,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "西塞罗经典篇章《论友谊》拉丁文原版。VSA Latin III 课程指定深度阅读文献。",
     videoUrl: "https://drive.google.com/file/d/1VMrsDKhdbIT74BWeCpbA-Ix0YeEBe6TJ/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 20.00,
+    weight: 0.35
   },
   {
     id: "latin-grammar",
@@ -57,7 +59,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "VSA Latin 系列高阶课程通用语法参考书，拉丁语语法界权威圣经。",
     videoUrl: "https://drive.google.com/file/d/1aURuvLmipYB_QXj23yoRRRr6Z4xy91w3/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 24.95,
+    weight: 1.5
   },
   {
     id: "latin-poetry",
@@ -69,7 +73,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "收录古罗马著名爱情诗篇。VSA Latin III 及古典文学拓展阅读必选读物。",
     videoUrl: "https://drive.google.com/file/d/14xtF4oLfsFra4WQmAOapzeLgsWqtZ2s7/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 25.95,
+    weight: 0.84
   },
   {
     id: "ovid-metamorphoses",
@@ -81,7 +87,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "奥维德《变形记》拉英双语精选集。VSA Latin III 课程核心研读原著。",
     videoUrl: "https://drive.google.com/file/d/1Fg1soLj6cU-CLmW0VsHq3TXzsr6Dt8Xq/view?usp=drivesdk",
-    hue: 215
+    hue: 215,
+    officialPrice: 22.00,
+    weight: 0.5
   },
   {
     id: "caesar-virgil",
@@ -93,7 +101,9 @@ const INITIAL_BOOKS = [
     status: "Available",
     notes: "恺撒《高卢战记》高阶拉丁文研读本。VSA AP Latin (Latin IV: Virgil & Caesar) 官方指定核心教材。",
     videoUrl: "https://drive.google.com/file/d/1VFeRh-6VhpDhIwwkUZrtLaYeG3M56Gk8/view?usp=drivesdk",
-    hue: 240
+    hue: 240,
+    officialPrice: 49.00,
+    weight: 1.75
   },
   {
     id: "jane-eyre",
@@ -1064,7 +1074,6 @@ function triggerViewBookDetail(bookId) {
   const detailShippingCost = document.getElementById("detailShippingCost");
   const detailOfficialTotal = document.getElementById("detailOfficialTotal");
   const detailSavings = document.getElementById("detailSavings");
-  const detailOfficialUrl = document.getElementById("detailOfficialUrl");
 
   if (book.officialPrice) {
     const weight = book.weight || 0;
@@ -1089,15 +1098,6 @@ function triggerViewBookDetail(bookId) {
       const savings = (totalOfficialCost - book.price).toFixed(2);
       const savingsPercent = Math.round(((totalOfficialCost - book.price) / totalOfficialCost) * 100);
       if (detailSavings) detailSavings.textContent = `$${savings} (立省 ${savingsPercent}%)`;
-      
-      if (detailOfficialUrl) {
-        if (book.officialUrl) {
-          detailOfficialUrl.href = book.officialUrl;
-          detailOfficialUrl.style.display = "inline-flex";
-        } else {
-          detailOfficialUrl.style.display = "none";
-        }
-      }
     } else {
       if (detailComparisonBox) detailComparisonBox.style.display = "none";
     }
