@@ -843,6 +843,31 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-box-orient: vertical;
 }
 
+.book-video-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: hsla(var(--hue-primary), 80%, 48%, 0.1);
+  border: 1px solid hsla(var(--hue-primary), 80%, 48%, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  text-decoration: none;
+  width: fit-content;
+  margin-top: -0.25rem;
+  margin-bottom: 0.75rem;
+  transition: all var(--transition-fast);
+}
+.book-video-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-text-dark);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
 /* Card Price, Status and Buy row */
 .book-card-footer {
   display: flex;

@@ -343,6 +343,7 @@ const toggleCustomCategoryLink = document.getElementById("toggleCustomCategoryLi
 const bookStatusSelect = document.getElementById("bookStatusSelect");
 const bookConditionSelect = document.getElementById("bookConditionSelect");
 const bookNotesInput = document.getElementById("bookNotesInput");
+const bookVideoUrlInput = document.getElementById("bookVideoUrlInput");
 const bookHueSlider = document.getElementById("bookHueSlider");
 const huePreviewBlock = document.getElementById("huePreviewBlock");
 const cancelFormBtn = document.getElementById("cancelFormBtn");
@@ -567,6 +568,13 @@ function renderGrid(books) {
       </div>
     ` : '';
 
+    const videoBtnHtml = book.videoUrl ? `
+      <a href="${book.videoUrl}" target="_blank" rel="noopener noreferrer" class="book-video-btn" onclick="event.stopPropagation()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+        <span>视频看书况</span>
+      </a>
+    ` : '';
+
     card.innerHTML = `
       ${adminOverlay}
 
@@ -593,6 +601,7 @@ function renderGrid(books) {
         <div class="book-notes" title="${book.notes || ''}">
           ${book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。"}
         </div>
+        ${videoBtnHtml}
       </div>
 
       <!-- Card Footer -->
@@ -825,6 +834,7 @@ function showToast(message, type = "primary") {
 function resetAdminForm() {
   bookForm.reset();
   editBookId.value = "";
+  bookVideoUrlInput.value = "";
   formActionTitle.textContent = "📖 添加新书目";
   cancelFormBtn.style.display = "none";
   
@@ -873,6 +883,7 @@ function handleSaveBook(e) {
   const statusVal = bookStatusSelect.value;
   const conditionVal = bookConditionSelect.value;
   const notesVal = bookNotesInput.value.trim();
+  const videoUrlVal = bookVideoUrlInput.value.trim();
   const hueVal = parseInt(bookHueSlider.value);
 
   // Determine category
@@ -901,6 +912,7 @@ function handleSaveBook(e) {
         status: statusVal,
         condition: conditionVal,
         notes: notesVal,
+        videoUrl: videoUrlVal,
         hue: hueVal
       };
       showToast(`📝 成功修改书籍《${titleVal}》！`);
@@ -917,6 +929,7 @@ function handleSaveBook(e) {
       status: statusVal,
       condition: conditionVal,
       notes: notesVal,
+      videoUrl: videoUrlVal,
       hue: hueVal
     });
     showToast(`✨ 成功上架新书《${titleVal}》！`);
@@ -953,6 +966,7 @@ function triggerEditBook(bookId) {
   bookStatusSelect.value = book.status;
   bookConditionSelect.value = book.condition;
   bookNotesInput.value = book.notes || "";
+  bookVideoUrlInput.value = book.videoUrl || "";
   bookHueSlider.value = book.hue || 210;
   
   // Update Color Slider block
