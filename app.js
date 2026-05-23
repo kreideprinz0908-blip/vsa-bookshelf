@@ -387,6 +387,36 @@ function loadState() {
       if (hasLegacy) {
         booksState = [...INITIAL_BOOKS];
         saveState();
+      } else {
+        // Smart merge: if books in INITIAL_BOOKS have updates (like newly added videoUrls, Hues, or other fields)
+        // that are not present/defined in localStorage booksState, merge them without overwriting user customizations.
+        let upgraded = false;
+        INITIAL_BOOKS.forEach(initBook => {
+          const stateBook = booksState.find(b => b.id === initBook.id);
+          if (stateBook) {
+            let bookChanged = false;
+            // 1. If videoUrl is defined in default but not in state (or is empty), copy it
+            if (initBook.videoUrl && !stateBook.videoUrl) {
+              stateBook.videoUrl = initBook.videoUrl;
+              bookChanged = true;
+            }
+            // 2. Add any other properties that exist in INITIAL_BOOKS but not in the saved state
+            for (const key in initBook) {
+              if (!(key in stateBook)) {
+                stateBook[key] = initBook[key];
+                bookChanged = true;
+              }
+            }
+            if (bookChanged) upgraded = true;
+          } else {
+            // New book added to the codebase list, insert it
+            booksState.push({ ...initBook });
+            upgraded = true;
+          }
+        });
+        if (upgraded) {
+          saveState();
+        }
       }
     } catch (e) {
       showToast("❌ 本地数据解析失败，已加载预设书目！", "danger");
