@@ -14,6 +14,7 @@ const INITIAL_BOOKS = [
     condition: "Good",
     status: "Available",
     notes: "拉丁语经典双语词典。Veritas Scholars Academy (VSA) Latin IV 课程推荐备考及阅读词汇工具书。",
+    videoUrl: "https://drive.google.com/file/d/1NVvIVEMAtUFwxVqeqTXmxviHFHJbouzg/view?usp=drive_link",
     hue: 215
   },
   {
