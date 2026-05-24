@@ -1656,7 +1656,7 @@ const BROWSE_TIPS = [
 let tipIndex = 0;
 
 // Google Apps Script Web App URL
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyosn7SxNbt6AxGLkGdxqOgjhJ2BGaVDGscTqef1EA7j3Xej6vQoRIJ77swuFqH25AH/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjZv-75XRAzsaiZMzsU_k-HVOS5OVB_cxHIlZtdmhdx76YKhhnYicCZNIPnUdI67Ov/exec";
 let activeContestants = []; // Holds list of registrations fetched from sheet
 
 function setupRaffleCampaign() {
