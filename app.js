@@ -1872,7 +1872,6 @@ function syncSpreadsheetRegistrations() {
   })
   .catch(err => {
     console.error("Spreadsheet fetch error:", err);
-    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2rem; color: var(--color-danger);">❌ 名单拉取失败！由于浏览器本地 file 协议跨域限制，请将网页部署上线（如 Vercel/GitHub Pages）后即可实时访问！</td></tr>`;
     
     // Populate fake list for testing offline/local
     activeContestants = [
@@ -1880,6 +1879,30 @@ function syncSpreadsheetRegistrations() {
       { name: "Lucy Buyer", email: "lucy@example.com", ticketId: "IEW6-FREE-7C9D2E1A" },
       { name: "Samuel Classmate", email: "samuel@example.com", ticketId: "IEW6-FREE-1F8E3B9C" }
     ];
+
+    // Show warning row followed by mock entries
+    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 0.6rem; color: var(--color-danger); font-size: 0.72rem; border-bottom: 1px dashed rgba(255, 78, 78, 0.15); background: rgba(255,78,78,0.02);">⚠️ 浏览器本地 File 跨域限制，已加载本地测试数据以供预览</td></tr>`;
+    
+    activeContestants.forEach(entry => {
+      const tr = document.createElement("tr");
+      
+      const tdName = document.createElement("td");
+      tdName.textContent = entry.name;
+      
+      const tdEmail = document.createElement("td");
+      tdEmail.textContent = entry.email;
+      
+      const tdTicket = document.createElement("td");
+      tdTicket.textContent = entry.ticketId;
+      tdTicket.style.fontFamily = "monospace";
+      tdTicket.style.color = "hsl(45, 100%, 65%)";
+      
+      tr.appendChild(tdName);
+      tr.appendChild(tdEmail);
+      tr.appendChild(tdTicket);
+      tableBody.appendChild(tr);
+    });
+    
     if (countBadge) countBadge.textContent = `${activeContestants.length} 人已登记 (测试数据)`;
     const rollWindow = document.getElementById("raffleRollWindow");
     if (rollWindow) {
