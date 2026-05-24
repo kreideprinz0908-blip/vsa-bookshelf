@@ -892,6 +892,13 @@ function renderGrid(books) {
       }
     }
 
+    let priceHtml = '';
+    if (isIEW6) {
+      priceHtml = `<span class="price-value" style="color: hsl(45, 100%, 65%);"><span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 6px;">$27</span>$0 <span style="font-size: 0.75rem; font-weight: 500;">(福利抽赠)</span></span>`;
+    } else {
+      priceHtml = `<span class="price-value">$${book.price}</span>`;
+    }
+
     card.innerHTML = `
       ${adminOverlay}
 
