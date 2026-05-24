@@ -2199,3 +2199,59 @@ label {
   margin: 0;
 }
 
+/* --- RAFFLE ADMIN MANAGER TABLE & SLOT MACHINE --- */
+.admin-table-container::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-table-container::-webkit-scrollbar-thumb {
+  background: var(--border-glass-hover);
+  border-radius: var(--radius-full);
+}
+
+.admin-table-container table th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-table-container table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-glass);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-body);
+}
+
+.admin-table-container table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.admin-table-container table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.raffle-roll-item {
+  padding: 0.5rem;
+  height: 40px;
+  line-height: 30px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: hsl(45, 100%, 65%);
+  text-shadow: 0 0 10px hsla(45, 95%, 48%, 0.4);
+  font-size: 1.25rem;
+  box-sizing: border-box;
+}
+
+.raffle-roll-item.winner-glow {
+  color: #00ff88 !important;
+  text-shadow: 0 0 15px rgba(0, 255, 136, 0.6) !important;
+  font-size: 1.45rem !important;
+  animation: pulseWinner 1s infinite ease-in-out;
+}
+
+@keyframes pulseWinner {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+

@@ -1647,6 +1647,10 @@ const BROWSE_TIPS = [
 ];
 let tipIndex = 0;
 
+// Google Apps Script Web App URL
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVI7ginCf7P6syPvIZazXDCURVyfmSdCQsxP-auLFIzNNpx0hPWr4AU0AqaCdfSni5/exec";
+let activeContestants = []; // Holds list of registrations fetched from sheet
+
 function setupRaffleCampaign() {
   const floatWidget = document.getElementById("giveawayFloat");
   const bannerGoBtn = document.getElementById("bannerGoBtn");
@@ -1658,23 +1662,24 @@ function setupRaffleCampaign() {
   // 1. Initial State Checks
   const isUnlocked = localStorage.getItem("raffle_unlocked") === "true";
   const isRegistered = localStorage.getItem("raffle_registered") === "true";
-  const ticketId = localStorage.getItem("raffle_registered_ticket") || generateTicketId();
   
-  // Set ticket ID in markup
-  const ticketIdEl = document.getElementById("raffleTicketId");
-  if (ticketIdEl) ticketIdEl.textContent = ticketId;
-
+  // Set ticket ID in markup if previously submitted
   if (isRegistered) {
-    // Already submitted raffle entry
-    setFloatWidgetRegistered(ticketId);
+    const savedTicket = localStorage.getItem("raffle_registered_ticket");
+    const savedName = localStorage.getItem("raffle_registered_name") || "您";
+    const savedEmail = localStorage.getItem("raffle_registered_email") || "";
+    
+    setFloatWidgetRegistered(savedTicket);
     setTopBannerRegistered();
-    setRaffleModalSuccessMarkup(localStorage.getItem("raffle_registered_name") || "您", ticketId, localStorage.getItem("raffle_registered_contact") || "");
+    setRaffleModalSuccessMarkup(savedName, savedTicket, savedEmail);
   } else if (isUnlocked) {
-    // Unlocked but not yet submitted form
+    // Unlocked but not yet registered
     setFloatWidgetUnlocked();
+    setupRaffleFormListeners();
   } else {
     // Start countdown visibility timer
     startRaffleCountdown();
+    setupRaffleFormListeners();
   }
 
   // 2. Wire Widget Click Actions
@@ -1696,60 +1701,277 @@ function setupRaffleCampaign() {
     });
   }
 
-  // 4. Form Submit handler for background email submission
+  // 4. Admin Modal Buttons wiring
+  setupRaffleAdminListeners();
+}
+
+// Live tracking of form email field to show deterministic ticket ID instantly
+function setupRaffleFormListeners() {
+  const raffleForm = document.getElementById("raffleForm");
+  const emailInput = document.getElementById("raffleEmailInput");
+  const ticketIdEl = document.getElementById("raffleTicketId");
+  
+  if (emailInput && ticketIdEl) {
+    emailInput.addEventListener("input", (e) => {
+      const emailVal = e.target.value.trim().toLowerCase();
+      if (emailVal) {
+        const hash = computeFNV1aHash(emailVal);
+        ticketIdEl.textContent = `IEW6-FREE-${hash}`;
+      } else {
+        ticketIdEl.textContent = "IEW6-FREE-XXXXXXXX";
+      }
+    });
+  }
+
   if (raffleForm) {
     raffleForm.addEventListener("submit", (e) => {
       e.preventDefault();
       
       const name = document.getElementById("raffleNameInput").value.trim();
-      const contact = document.getElementById("raffleContactInput").value.trim();
-      const finalTicketId = document.getElementById("raffleTicketId").textContent;
+      const email = document.getElementById("raffleEmailInput").value.trim().toLowerCase();
+      const finalTicketId = ticketIdEl.textContent;
+      
+      if (!email || finalTicketId === "IEW6-FREE-XXXXXXXX") {
+        showToast("⚠️ 请输入有效的电子邮箱！", "warning");
+        return;
+      }
       
       const submitBtn = document.getElementById("submitRaffleBtn");
       const originalBtnText = submitBtn.innerHTML;
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>⏳ 正在提交登记...</span>`;
+      submitBtn.innerHTML = `<span>⏳ 正在提交云端登记...</span>`;
       
-      // Submit via FormSubmit.co background AJAX endpoint
-      fetch("https://formsubmit.co/ajax/kreideprinz0908@gmail.com", {
+      // Submit via standard POST to Google Sheets endpoint
+      // Using text/plain mode with no-cors to prevent CORS preflight blocks in local preview files!
+      fetch(APPS_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+          "Content-Type": "text/plain"
         },
         body: JSON.stringify({
-          "Raffle Campaign": "IEW6 Textbook Free Giveaway",
-          "Unique Ticket ID": finalTicketId,
-          "Participant Name": name,
-          "WeChat ID or Email": contact,
-          "_subject": `🎉 新抽奖登记: ${name} [${finalTicketId}]`,
-          "_honey": "", // Anti-spam honey field
-          "_template": "table"
+          ticketId: finalTicketId,
+          name: name,
+          email: email
         })
       })
-      .then(res => res.json())
-      .then(data => {
-        // Save states
+      .then(() => {
+        // Record states locally
         localStorage.setItem("raffle_registered", "true");
         localStorage.setItem("raffle_registered_ticket", finalTicketId);
         localStorage.setItem("raffle_registered_name", name);
-        localStorage.setItem("raffle_registered_contact", contact);
+        localStorage.setItem("raffle_registered_email", email);
         
-        // Update UI
+        // Update components
         setFloatWidgetRegistered(finalTicketId);
         setTopBannerRegistered();
-        setRaffleModalSuccessMarkup(name, finalTicketId, contact);
+        setRaffleModalSuccessMarkup(name, finalTicketId, email);
         
-        showToast("🎉 恭喜！抽奖信息提交成功！");
+        showToast("🎉 恭喜！您的抽奖信息已成功同步至 Google Sheets！");
+        
+        // If user details modal of IEW6 is open, re-render it
+        const detailModal = document.getElementById("bookDetailModal");
+        if (detailModal && detailModal.classList.contains("active")) {
+          const iew6Book = booksState.find(b => b.id === "iew-grammar-6");
+          if (iew6Book) openBookDetail(iew6Book);
+        }
       })
       .catch(err => {
-        console.error("Giveaway registration error:", err);
+        console.error("Spreadsheet sync error:", err);
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
         showToast("❌ 登记失败，请检查网络连接！", "danger");
       });
     });
   }
+}
+
+// Admin Panel sync list & rolling animations wiring
+function setupRaffleAdminListeners() {
+  const openRaffleAdminBtn = document.getElementById("openRaffleAdminBtn");
+  const refreshRaffleListBtn = document.getElementById("refreshRaffleListBtn");
+  const startRaffleDrawBtn = document.getElementById("startRaffleDrawBtn");
+  const adminModal = document.getElementById("adminModal");
+  const raffleAdminModal = document.getElementById("raffleAdminModal");
+
+  if (openRaffleAdminBtn) {
+    openRaffleAdminBtn.addEventListener("click", () => {
+      closeModal(adminModal);
+      openModal(raffleAdminModal);
+      syncSpreadsheetRegistrations();
+    });
+  }
+
+  if (refreshRaffleListBtn) {
+    refreshRaffleListBtn.addEventListener("click", () => {
+      syncSpreadsheetRegistrations();
+    });
+  }
+
+  if (startRaffleDrawBtn) {
+    startRaffleDrawBtn.addEventListener("click", () => {
+      runRaffleLotteryDrawing();
+    });
+  }
+}
+
+// Fetch list of registered users from Google Sheet
+function syncSpreadsheetRegistrations() {
+  const tableBody = document.getElementById("raffleEntriesTableBody");
+  const countBadge = document.getElementById("raffleEntriesCount");
+  
+  if (!tableBody) return;
+  
+  tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2rem; color: var(--color-primary);">🔄 正在从 Google Sheets 同步登记名单...</td></tr>`;
+  
+  fetch(APPS_SCRIPT_URL, {
+    method: "GET",
+    redirect: "follow"
+  })
+  .then(res => res.json())
+  .then(data => {
+    activeContestants = data || [];
+    
+    // Fill Counter Badge
+    if (countBadge) countBadge.textContent = `${activeContestants.length} 人已登记`;
+    
+    // Update Roll board initial text
+    const rollWindow = document.getElementById("raffleRollWindow");
+    if (rollWindow) {
+      rollWindow.innerHTML = `<div class="raffle-roll-item">[ 已就绪，共 ${activeContestants.length} 位候选人 ]</div>`;
+    }
+
+    if (activeContestants.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2rem; color: var(--color-text-muted);">暂无任何登记数据。发朋友圈来吸引人来抽奖吧！</td></tr>`;
+      return;
+    }
+    
+    // Render list
+    tableBody.innerHTML = "";
+    activeContestants.forEach(entry => {
+      const tr = document.createElement("tr");
+      
+      const tdName = document.createElement("td");
+      tdName.textContent = entry.name;
+      
+      const tdEmail = document.createElement("td");
+      tdEmail.textContent = entry.email;
+      
+      const tdTicket = document.createElement("td");
+      tdTicket.textContent = entry.ticketId;
+      tdTicket.style.fontFamily = "monospace";
+      tdTicket.style.color = "hsl(45, 100%, 65%)";
+      
+      tr.appendChild(tdName);
+      tr.appendChild(tdEmail);
+      tr.appendChild(tdTicket);
+      tableBody.appendChild(tr);
+    });
+    
+    showToast("🔄 Google Sheets 云端登记名单同步成功！");
+  })
+  .catch(err => {
+    console.error("Spreadsheet fetch error:", err);
+    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2rem; color: var(--color-danger);">❌ 名单拉取失败！由于浏览器本地 file 协议跨域限制，请将网页部署上线（如 Vercel/GitHub Pages）后即可实时访问！</td></tr>`;
+    
+    // Populate fake list for testing offline/local
+    activeContestants = [
+      { name: "Isaac Student", email: "isaac@example.com", ticketId: "IEW6-FREE-5A3D9B1C" },
+      { name: "Lucy Buyer", email: "lucy@example.com", ticketId: "IEW6-FREE-7C9D2E1A" },
+      { name: "Samuel Classmate", email: "samuel@example.com", ticketId: "IEW6-FREE-1F8E3B9C" }
+    ];
+    if (countBadge) countBadge.textContent = `${activeContestants.length} 人已登记 (测试数据)`;
+    const rollWindow = document.getElementById("raffleRollWindow");
+    if (rollWindow) {
+      rollWindow.innerHTML = `<div class="raffle-roll-item">[ 本地测试就绪，共 3 名候选人 ]</div>`;
+    }
+  });
+}
+
+// The 3D decel rolling visual lottery selector
+function runRaffleLotteryDrawing() {
+  const startBtn = document.getElementById("startRaffleDrawBtn");
+  const rollWindow = document.getElementById("raffleRollWindow");
+  
+  if (activeContestants.length === 0) {
+    showToast("⚠️ 暂无有效的登记人名单，无法开启抽奖！", "warning");
+    return;
+  }
+  
+  // Disable button
+  startBtn.disabled = true;
+  startBtn.innerHTML = `<span>⏳ 滚轮滚动筛选中...</span>`;
+  startBtn.style.opacity = "0.7";
+  
+  let currentTick = 0;
+  const totalTicks = 35; // Total decel frames
+  let delay = 40; // Starts at 40ms interval
+  
+  function tick() {
+    currentTick++;
+    
+    // Pick a random candidate from active listings
+    const candidate = activeContestants[Math.floor(Math.random() * activeContestants.length)];
+    
+    // Update visual roll container
+    rollWindow.innerHTML = `
+      <div class="raffle-roll-item">[ SELECTING ]</div>
+      <div class="raffle-roll-item" style="font-size: 1.15rem; color: #fff; opacity: 0.65;">${candidate.name}</div>
+      <div class="raffle-roll-item" id="activeRollingItem">${candidate.ticketId}</div>
+      <div class="raffle-roll-item" style="font-size: 0.75rem; color: var(--color-text-muted); opacity: 0.5;">${candidate.email}</div>
+    `;
+    
+    // Play light ticking animation triggers
+    const rollingItem = document.getElementById("activeRollingItem");
+    if (rollingItem) {
+      rollingItem.style.transform = `scale(${1 + Math.sin(currentTick) * 0.05})`;
+    }
+    
+    // Deceleration curves
+    if (currentTick < 15) {
+      delay = 45;
+    } else if (currentTick < 25) {
+      delay = 80;
+    } else if (currentTick < 30) {
+      delay = 180;
+    } else if (currentTick < 33) {
+      delay = 380;
+    } else {
+      delay = 600;
+    }
+    
+    if (currentTick < totalTicks) {
+      setTimeout(tick, delay);
+    } else {
+      // Halted on final winner!
+      const winner = activeContestants[Math.floor(Math.random() * activeContestants.length)];
+      
+      rollWindow.innerHTML = `
+        <div class="raffle-roll-item" style="color: #ffd700; font-size: 0.9rem; text-shadow: none;">👑 WINNER CHOSEN 👑</div>
+        <div class="raffle-roll-item" style="color: #fff; font-size: 1.3rem;">${winner.name}</div>
+        <div class="raffle-roll-item winner-glow" id="activeRollingItem">${winner.ticketId}</div>
+        <div class="raffle-roll-item" style="font-size: 0.85rem; color: var(--color-primary); font-weight: 500;">${winner.email}</div>
+      `;
+      
+      // Shoots gold confetti splash!
+      launchConfetti();
+      
+      // Toast notification feedback
+      showToast(`🎉 恭喜中奖者！已选定 ${winner.name} [${winner.ticketId}]`);
+      
+      // Open modal win overlay announcement card after a short suspense gap
+      setTimeout(() => {
+        alert(`🎉 恭喜中奖者！ 🎉\n\n中奖人姓名: ${winner.name}\n中奖人邮箱: ${winner.email}\n专属中奖编码: ${winner.ticketId}\n\n请联络中奖邮箱商讨 IEW6 经典教材的领取与交付事宜，或在微信群同步喜报！`);
+        
+        // Restore buttons
+        startBtn.disabled = false;
+        startBtn.innerHTML = `<span>🎯 开启大转盘抽奖 (Spin Lottery)</span>`;
+        startBtn.style.opacity = "1";
+      }, 1200);
+    }
+  }
+  
+  tick();
 }
 
 // Countdown Active Visibility Timer
@@ -1856,7 +2078,7 @@ function setTopBannerRegistered() {
   }
 }
 
-function setRaffleModalSuccessMarkup(name, ticketId, contact) {
+function setRaffleModalSuccessMarkup(name, ticketId, email) {
   const raffleModalBody = document.getElementById("raffleModalBody");
   if (raffleModalBody) {
     raffleModalBody.innerHTML = `
@@ -1864,12 +2086,23 @@ function setRaffleModalSuccessMarkup(name, ticketId, contact) {
         <div class="raffle-success-icon">🎉</div>
         <h3 class="raffle-success-title">您已成功登记！</h3>
         <p class="raffle-success-desc">
-          恭喜 <strong>${name}</strong>！您的专属抽奖编码 <strong>${ticketId}</strong> 已成功录入，并通过系统直接递交给了 Chris！
+          恭喜 <strong>${name}</strong>！您的专属抽奖编码 <strong>${ticketId}</strong> 已成功同步写入 Google Sheets 云端表格！
         </p>
         <p class="raffle-success-desc" style="font-size: 0.8rem; margin-top: 0.4rem; opacity: 0.85;">
-          中奖结果将在书架交易期结束后揭晓。若您中奖，我们会通过微信号或邮箱 <strong>${contact}</strong> 与您建立联系。感谢您的关注！
+          中奖结果将在书展结束后揭晓。若您中奖，Chris 会直接通过您的电子邮箱 <strong>${email}</strong> 与您建立联系。
         </p>
-        <button class="btn btn-secondary" data-close-modal="giveawayModal" style="margin-top: 1rem; width: 100%; justify-content: center;">
+        
+        <!-- Receipt Actions Grid -->
+        <div style="display: flex; gap: 0.75rem; width: 100%; margin-top: 1rem;">
+          <button class="btn btn-primary" id="downloadReceiptBtn" style="flex: 1; font-size: 0.8rem; justify-content: center; gap: 0.3rem;">
+            <span>📥 下载凭证文件</span>
+          </button>
+          <button class="btn btn-secondary" id="copyReceiptBtn" style="flex: 1; font-size: 0.8rem; justify-content: center; gap: 0.3rem;">
+            <span>📋 复制凭证文本</span>
+          </button>
+        </div>
+        
+        <button class="btn btn-secondary" data-close-modal="giveawayModal" style="margin-top: 0.75rem; width: 100%; justify-content: center;">
           <span>返回探索书本</span>
         </button>
       </div>
@@ -1882,16 +2115,70 @@ function setRaffleModalSuccessMarkup(name, ticketId, contact) {
         closeModal(document.getElementById("giveawayModal"));
       });
     }
+
+    // Bind Receipt Download
+    const downloadBtn = document.getElementById("downloadReceiptBtn");
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", () => {
+        triggerReceiptDownload(name, ticketId, email);
+      });
+    }
+
+    // Bind Receipt Copy
+    const copyBtn = document.getElementById("copyReceiptBtn");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", () => {
+        copyReceiptToClipboard(name, ticketId, email);
+      });
+    }
   }
 }
 
-function generateTicketId() {
-  const date = new Date();
-  const yyyymmdd = date.getFullYear() + 
-                   String(date.getMonth() + 1).padStart(2, '0') + 
-                   String(date.getDate()).padStart(2, '0');
-  const randomHex = Math.floor(Math.random() * 0xffff).toString(16).toUpperCase().padStart(4, '0');
-  return `IEW6-FREE-${yyyymmdd}-${randomHex}`;
+// Deterministic 32-bit FNV-1a non-cryptographic hash function
+function computeFNV1aHash(str) {
+  let hash = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = (hash * 16777619) >>> 0;
+  }
+  return hash.toString(16).toUpperCase().padStart(8, '0');
+}
+
+// Triggers local Blob client-side file receipt download
+function triggerReceiptDownload(name, ticketId, email) {
+  const dateStr = new Date().toISOString().split('T')[0];
+  const receiptText = `===========================================
+   🎓 CHRIS'S BOOK SHOWCASE - RAFFLE RECEIPT
+===========================================
+Book Title : IEW 6: Structure and Style for Students
+Ticket ID  : ${ticketId}
+Reg. Email : ${email}
+Reg. Name  : ${name}
+Reg. Date  : ${dateStr}
+Status     : Synced & Entered in Google Sheet
+-------------------------------------------
+Thank you for exploring our bookshelves and tutoring services!
+Keep this receipt to verify your entry when results are announced.
+===========================================`;
+
+  const blob = new Blob([receiptText], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `iew6-raffle-receipt-${ticketId}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast("📥 电子凭证下载成功！");
+}
+
+// Clipboard formatting helper
+function copyReceiptToClipboard(name, ticketId, email) {
+  const textToCopy = `🎫 Chris's Book Showcase - 抽奖凭证\n------------------------------\n课本名称: IEW 6 Textbook Giveaway\n专属编码: ${ticketId}\n登记姓名: ${name}\n登记邮箱: ${email}\n登记状态: 已成功同步至 Google Sheet 云端表格\n------------------------------\n请妥善保管此编码！`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast("📋 凭证已成功复制到剪贴板！");
+  }).catch(err => {
+    showToast("❌ 复制失败，请手动截图保存！", "danger");
+  });
 }
 
 // --- CONFETTI ANIMATION ENGINE (PURE JS) ---

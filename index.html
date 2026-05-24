@@ -554,12 +554,86 @@
             <button class="btn btn-danger-outline btn-sm" id="resetDefaultBtn">
               <span>恢复初始默认数据</span>
             </button>
+            <button class="btn btn-primary btn-sm" id="openRaffleAdminBtn" style="background: linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 95%, 45%)); color: #0b0c10; font-weight: 700; border: none; margin-top: 1rem; justify-content: center; gap: 0.4rem;">
+              <span>🎟️ 抽奖活动管理器 (Raffle Manager)</span>
+            </button>
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-close-modal="adminModal">关闭管理后台</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Admin Raffle Manager & Drawing Board -->
+  <div class="modal-overlay" id="raffleAdminModal">
+    <div class="modal-content glass admin-modal-width animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title">🎟️ IEW6 抽奖活动管理器 (Raffle Manager)</h3>
+        <button class="modal-close" data-close-modal="raffleAdminModal">&times;</button>
+      </div>
+      <div class="modal-body admin-body-flex">
+        
+        <!-- Left Side: Contestants List -->
+        <div class="admin-form-column" style="max-height: 60vh;">
+          <h4 class="admin-section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <span>📋 已登记名单 (Contestants)</span>
+            <span class="badge badge-info" id="raffleEntriesCount" style="margin-left: auto; font-size: 0.75rem; background: var(--color-primary); color: var(--color-text-dark); padding: 0.1rem 0.5rem; border-radius: var(--radius-full);">0 人已登记</span>
+          </h4>
+          <p class="admin-help-text" style="margin-bottom: 0.5rem;">以下是自动从你的 Google Sheet 云端表格拉取的实时登记名单：</p>
+          
+          <div class="admin-table-container" style="flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); max-height: 40vh;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-glass); background: rgba(255,255,255,0.03);">
+                  <th style="padding: 0.5rem 0.75rem; color: var(--color-primary);">姓名 (Name)</th>
+                  <th style="padding: 0.5rem 0.75rem; color: var(--color-primary);">邮箱 (Email)</th>
+                  <th style="padding: 0.5rem 0.75rem; color: var(--color-primary);">抽奖编码 (Ticket)</th>
+                </tr>
+              </thead>
+              <tbody id="raffleEntriesTableBody">
+                <tr>
+                  <td colspan="3" style="text-align: center; padding: 2rem; color: var(--color-text-muted);">正在同步云端登记数据...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <button class="btn btn-secondary btn-sm" id="refreshRaffleListBtn" style="margin-top: 0.5rem; justify-content: center; gap: 0.4rem; width: 100%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>🔄 刷新云端数据 (Sync Spreadsheet)</span>
+          </button>
+        </div>
+
+        <!-- Right Side: The 3D rolling slot visual board -->
+        <div class="admin-tools-column" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h4 class="admin-section-title">🎯 黄金大转盘 (Lucky Lottery Roll)</h4>
+            <p class="admin-help-text">点击下方按钮将启动一个黄金滚轮，在所有已登记的名单中进行随机筛选！</p>
+          </div>
+          
+          <!-- Ticking slot machine window -->
+          <div class="raffle-roll-container" style="background: rgba(0, 0, 0, 0.45); border: 2px solid hsl(45, 95%, 48%); box-shadow: 0 0 25px hsla(45, 95%, 48%, 0.15); border-radius: var(--radius-md); height: 160px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; margin: 1.5rem 0;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); z-index: 2;"></div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 20px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); z-index: 2;"></div>
+            
+            <div class="raffle-roll-window" id="raffleRollWindow" style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: hsl(45, 100%, 65%); text-align: center; text-shadow: 0 0 12px hsla(45, 95%, 48%, 0.4); transition: transform 0.1s linear; display: flex; flex-direction: column; gap: 0.5rem; transform: translateY(0);">
+              <div style="padding: 0.5rem;">[ ⏳ 等待同步数据 ]</div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 1rem; width: 100%;">
+            <button class="btn btn-primary" id="startRaffleDrawBtn" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; background: linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 95%, 45%)); color: #0b0c10; border: none; padding: 0.85rem 1rem;">
+              <span>🎯 开启大转盘抽奖 (Spin Lottery)</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal="raffleAdminModal">关闭抽奖后台</button>
       </div>
     </div>
   </div>
@@ -616,18 +690,18 @@
         <!-- The Raffle Registration Form -->
         <form class="raffle-form" id="raffleForm">
           <div class="form-group">
-            <label for="raffleNameInput">您的名字 / 微信昵称 (Your Name) <span class="required">*</span></label>
-            <input type="text" id="raffleNameInput" class="form-control" placeholder="请输入您的称呼，方便中奖后确认身份" required>
+            <label for="raffleNameInput">您的名字 (Your Name) <span class="required">*</span></label>
+            <input type="text" id="raffleNameInput" class="form-control" placeholder="请输入您的名字或常用称呼，以便中奖后确认身份" required>
           </div>
           
           <div class="form-group">
-            <label for="raffleContactInput">您的微信号或邮箱 (WeChat ID or Email) <span class="required">*</span></label>
-            <input type="text" id="raffleContactInput" class="form-control" placeholder="请输入微信号或常用邮箱，方便中奖后直接联系您" required>
+            <label for="raffleEmailInput">您的电子邮箱 (Your Email) <span class="required">*</span></label>
+            <input type="email" id="raffleEmailInput" class="form-control" placeholder="请输入您的常用邮箱，抽中后会发邮件联系您" required>
           </div>
 
           <div class="form-actions" style="margin-top: 1rem;">
             <button type="submit" class="btn btn-primary" id="submitRaffleBtn" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700;">
-              <span>🚀 立即提交登记 (Submit Entry)</span>
+              <span>🚀 立即登记抽奖 (Submit Entry)</span>
             </button>
           </div>
         </form>
