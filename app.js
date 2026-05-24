@@ -591,6 +591,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (adminToggleBtn) adminToggleBtn.style.display = "inline-flex";
   }
 
+  // Clear raffle registration state if ?reset or ?clear parameter is provided
+  if (urlParams.has('reset') || urlParams.has('clear')) {
+    localStorage.removeItem("raffle_registered");
+    localStorage.removeItem("raffle_registered_ticket");
+    localStorage.removeItem("raffle_registered_name");
+    localStorage.removeItem("raffle_registered_email");
+  }
+
   // Load State
   loadState();
 
