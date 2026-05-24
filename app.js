@@ -609,6 +609,9 @@ document.addEventListener("DOMContentLoaded", () => {
       sessionStorage.setItem("chris_seen_promo", "true");
     }, 800); // Elegant entrance delay
   }
+
+  // Initialize Free Giveaway & Browse-to-Win Campaign
+  setupRaffleCampaign();
 });
 
 // --- State Controllers ---
@@ -822,8 +825,14 @@ function renderGrid(books) {
   books.forEach(book => {
     // Generate card element
     const card = document.createElement("div");
-    card.className = "book-card glass";
     card.dataset.id = book.id;
+
+    const isIEW6 = book.id === 'iew-grammar-6';
+    if (isIEW6) {
+      card.className = "book-card glass giveaway-card";
+    } else {
+      card.className = "book-card glass";
+    }
 
     // Cover color
     const hue = book.hue || 210;
@@ -832,7 +841,11 @@ function renderGrid(books) {
     // Status Badge
     let statusClass = "available";
     let statusLabel = "在售 (Available)";
-    if (book.status === "Reserved for Lucy") {
+    
+    if (isIEW6) {
+      statusClass = "available";
+      statusLabel = "🎁 限时抽奖赠送";
+    } else if (book.status === "Reserved for Lucy") {
       statusClass = "reserved";
       statusLabel = "已售 • Lucy";
     } else if (book.status === "Reserved for Samuel") {
@@ -913,7 +926,7 @@ function renderGrid(books) {
         <div class="book-price-box">
           <span class="price-label">标价</span>
           <div style="display: flex; align-items: center;">
-            <span class="price-value">$${book.price}</span>
+            ${priceHtml}
             ${savingsHtml}
           </div>
         </div>
@@ -1146,7 +1159,12 @@ function triggerViewBookDetail(bookId) {
   detailTitle.textContent = book.title;
   detailAuthor.textContent = book.author || "未知";
   detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
-  detailPrice.textContent = `$${book.price}`;
+  
+  if (book.id === "iew-grammar-6") {
+    detailPrice.innerHTML = `<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 6px;">$27</span>$0 <span style="font-size: 0.75rem; font-weight: 500; color: hsl(45, 100%, 65%);">(福利抽赠)</span>`;
+  } else {
+    detailPrice.textContent = `$${book.price}`;
+  }
 
   // Handle Official Price Comparison Display (including international shipping savings)
   const detailComparisonBox = document.getElementById("detailComparisonBox");
@@ -1225,25 +1243,57 @@ function triggerViewBookDetail(bookId) {
     detailButtonsContainer.appendChild(videoBtn);
   }
 
-  // 2. Reservation Button
-  const actionBtn = document.createElement("button");
-  actionBtn.className = "btn-large-glow btn-reserve";
-  
-  if (book.status === "Available") {
-    actionBtn.innerHTML = `<span>🤝 联系 Chris 预订这本书</span>`;
-    actionBtn.onclick = () => {
-      closeModal(bookDetailModal);
-      openModal(document.getElementById("contactModal"));
-    };
+  // 2. Reservation Button / Giveaway Registration
+  const isIEW6 = book.id === "iew-grammar-6";
+  if (isIEW6) {
+    const raffleBtn = document.createElement("button");
+    raffleBtn.className = "btn-large-glow";
+    raffleBtn.style.background = "linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 95%, 45%))";
+    raffleBtn.style.color = "#0b0c10";
+    raffleBtn.style.border = "none";
+    
+    // Check if the raffle timer is completed
+    const isUnlocked = localStorage.getItem("raffle_unlocked") === "true";
+    const isRegistered = localStorage.getItem("raffle_registered") === "true";
+    if (isRegistered) {
+      raffleBtn.innerHTML = `<span>🎉 您已成功登记此书抽奖 🎉</span>`;
+      raffleBtn.onclick = () => {
+        const ticketId = localStorage.getItem("raffle_registered_ticket") || "已登记";
+        alert(`您已成功登记抽奖！您的专属抽奖编码是: ${ticketId}。抽奖结果将在书展结束后公布，届时 Chris 会直接联系中奖者！`);
+      };
+    } else if (isUnlocked) {
+      raffleBtn.innerHTML = `<span>🎁 立即登记 0元 抽奖 🎁</span>`;
+      raffleBtn.onclick = () => {
+        closeModal(bookDetailModal);
+        openModal(document.getElementById("giveawayModal"));
+      };
+    } else {
+      raffleBtn.innerHTML = `<span>⏳ 浏览探索本站 30秒 即可解锁抽奖登记</span>`;
+      raffleBtn.onclick = () => {
+        alert("感谢关注本套经典写作教材！您只需在本站继续浏览探索 30 秒（可在下方查看进度），系统就会自动为您解锁专属抽奖登记通道！");
+      };
+    }
+    detailButtonsContainer.appendChild(raffleBtn);
   } else {
-    // Reserved / sold out context
-    const buyerName = statusLabel.includes(" • ") ? statusLabel.split(" • ")[1] : "其他同学";
-    actionBtn.innerHTML = `<span>💬 咨询二次转让（联系 ${buyerName}）</span>`;
-    actionBtn.onclick = () => {
-      alert(`此书已被 ${buyerName} 买走。若你确实极其急需，可在后续开学后与该同学联系，咨询其使用完毕后是否可以二次转让给你，或联系 Chris 为你推荐同类型参考教材！`);
-    };
+    const actionBtn = document.createElement("button");
+    actionBtn.className = "btn-large-glow btn-reserve";
+    
+    if (book.status === "Available") {
+      actionBtn.innerHTML = `<span>🤝 联系 Chris 预订这本书</span>`;
+      actionBtn.onclick = () => {
+        closeModal(bookDetailModal);
+        openModal(document.getElementById("contactModal"));
+      };
+    } else {
+      // Reserved / sold out context
+      const buyerName = statusLabel.includes(" • ") ? statusLabel.split(" • ")[1] : "其他同学";
+      actionBtn.innerHTML = `<span>💬 咨询二次转让（联系 ${buyerName}）</span>`;
+      actionBtn.onclick = () => {
+        alert(`此书已被 ${buyerName} 买走。若你确实极其急需，可在后续开学后与该同学联系，咨询其使用完毕后是否可以二次转让给你，或联系 Chris 为你推荐同类型参考教材！`);
+      };
+    }
+    detailButtonsContainer.appendChild(actionBtn);
   }
-  detailButtonsContainer.appendChild(actionBtn);
 
   // Open the Modal View
   openModal(bookDetailModal);
@@ -1572,3 +1622,338 @@ function triggerResetDefault() {
   closeModal(adminModal);
   showToast("🔄 书本数据已成功恢复至出厂预设值！");
 }
+
+
+/* ==========================================================================
+   FREE GIVEAWAY & BROWSE-TO-WIN INTERACTIVE CONTROLLER
+   ========================================================================== */
+
+let raffleTimer = null;
+let raffleProgress = 0; // Out of 30 seconds
+const RAFFLE_DURATION = 30; // 30 seconds browse time
+const BROWSE_TIPS = [
+  "浏览探索本站 30 秒即可抽奖登记",
+  "点击左侧【学术背景与辅导咨询】查看 Chris 的同步辅导经验",
+  "点击任意书籍卡片，查看 3D 效果与视频书况！",
+  "了解 Veritas / TPS 体系与备考心得，联络 Chris 深度交流",
+  "高中理科 AP 物理/微积分/高阶 Latin 大一科研欢迎交流！"
+];
+let tipIndex = 0;
+
+function setupRaffleCampaign() {
+  const floatWidget = document.getElementById("giveawayFloat");
+  const bannerGoBtn = document.getElementById("bannerGoBtn");
+  const raffleForm = document.getElementById("raffleForm");
+  const raffleModalBody = document.getElementById("raffleModalBody");
+  
+  if (!floatWidget) return;
+
+  // 1. Initial State Checks
+  const isUnlocked = localStorage.getItem("raffle_unlocked") === "true";
+  const isRegistered = localStorage.getItem("raffle_registered") === "true";
+  const ticketId = localStorage.getItem("raffle_registered_ticket") || generateTicketId();
+  
+  // Set ticket ID in markup
+  const ticketIdEl = document.getElementById("raffleTicketId");
+  if (ticketIdEl) ticketIdEl.textContent = ticketId;
+
+  if (isRegistered) {
+    // Already submitted raffle entry
+    setFloatWidgetRegistered(ticketId);
+    setTopBannerRegistered();
+    setRaffleModalSuccessMarkup(localStorage.getItem("raffle_registered_name") || "您", ticketId, localStorage.getItem("raffle_registered_contact") || "");
+  } else if (isUnlocked) {
+    // Unlocked but not yet submitted form
+    setFloatWidgetUnlocked();
+  } else {
+    // Start countdown visibility timer
+    startRaffleCountdown();
+  }
+
+  // 2. Wire Widget Click Actions
+  floatWidget.addEventListener("click", () => {
+    if (localStorage.getItem("raffle_registered") === "true") {
+      openModal(document.getElementById("giveawayModal"));
+    } else if (localStorage.getItem("raffle_unlocked") === "true") {
+      openModal(document.getElementById("giveawayModal"));
+    } else {
+      showToast(`⏳ 正在解锁中，请继续浏览本站 ${RAFFLE_DURATION - raffleProgress} 秒！`, "info");
+    }
+  });
+
+  // 3. Banner button click scrolls to bookshelf grid
+  if (bannerGoBtn) {
+    bannerGoBtn.addEventListener("click", () => {
+      document.getElementById("bookGrid").scrollIntoView({ behavior: "smooth" });
+      showToast("📚 欢迎探索！正在记录您的浏览时间...");
+    });
+  }
+
+  // 4. Form Submit handler for background email submission
+  if (raffleForm) {
+    raffleForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById("raffleNameInput").value.trim();
+      const contact = document.getElementById("raffleContactInput").value.trim();
+      const finalTicketId = document.getElementById("raffleTicketId").textContent;
+      
+      const submitBtn = document.getElementById("submitRaffleBtn");
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>⏳ 正在提交登记...</span>`;
+      
+      // Submit via FormSubmit.co background AJAX endpoint
+      fetch("https://formsubmit.co/ajax/kreideprinz0908@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          "Raffle Campaign": "IEW6 Textbook Free Giveaway",
+          "Unique Ticket ID": finalTicketId,
+          "Participant Name": name,
+          "WeChat ID or Email": contact,
+          "_subject": `🎉 新抽奖登记: ${name} [${finalTicketId}]`,
+          "_honey": "", // Anti-spam honey field
+          "_template": "table"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        // Save states
+        localStorage.setItem("raffle_registered", "true");
+        localStorage.setItem("raffle_registered_ticket", finalTicketId);
+        localStorage.setItem("raffle_registered_name", name);
+        localStorage.setItem("raffle_registered_contact", contact);
+        
+        // Update UI
+        setFloatWidgetRegistered(finalTicketId);
+        setTopBannerRegistered();
+        setRaffleModalSuccessMarkup(name, finalTicketId, contact);
+        
+        showToast("🎉 恭喜！抽奖信息提交成功！");
+      })
+      .catch(err => {
+        console.error("Giveaway registration error:", err);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+        showToast("❌ 登记失败，请检查网络连接！", "danger");
+      });
+    });
+  }
+}
+
+// Countdown Active Visibility Timer
+function startRaffleCountdown() {
+  const progressCircle = document.getElementById("floatProgressCircle");
+  const floatText = document.getElementById("floatText");
+  const floatSubtext = document.getElementById("floatSubtext");
+  
+  if (!progressCircle) return;
+  
+  // Circumference = 2 * PI * 16 = 100.53
+  const strokeCircumference = 100.53;
+  
+  raffleTimer = setInterval(() => {
+    // Only count down if active tab is focused
+    if (document.visibilityState !== "visible") return;
+    
+    raffleProgress++;
+    
+    // Update circular progress SVG stroke offset
+    const offset = strokeCircumference - (raffleProgress / RAFFLE_DURATION) * strokeCircumference;
+    progressCircle.style.strokeDashoffset = offset;
+    
+    // Update status text
+    const secondsLeft = RAFFLE_DURATION - raffleProgress;
+    floatText.textContent = `解锁抽奖进度: ${Math.round((raffleProgress / RAFFLE_DURATION) * 100)}%`;
+    
+    // Tip rotation every 6 seconds
+    if (raffleProgress % 6 === 0) {
+      tipIndex = (tipIndex + 1) % BROWSE_TIPS.length;
+      floatSubtext.textContent = BROWSE_TIPS[tipIndex];
+    } else if (raffleProgress < 5) {
+      floatSubtext.textContent = `探索书架 ${secondsLeft} 秒后自动解锁 0元 抽奖`;
+    }
+
+    if (raffleProgress >= RAFFLE_DURATION) {
+      clearInterval(raffleTimer);
+      unlockRaffleCampaign();
+    }
+  }, 1000);
+}
+
+// Unlock State trigger
+function unlockRaffleCampaign() {
+  localStorage.setItem("raffle_unlocked", "true");
+  setFloatWidgetUnlocked();
+  
+  // Confetti explosion celebration!
+  launchConfetti();
+  
+  // Toast alert feedback
+  showToast("🎉 恭喜！您已成功解锁 IEW6 教材的 0元 抽奖登记通道！");
+  
+  // If user details modal of IEW6 is open, re-render the action buttons immediately to reflect unlocked state
+  const detailModal = document.getElementById("bookDetailModal");
+  if (detailModal && detailModal.classList.contains("active")) {
+    const iew6Book = booksState.find(b => b.id === "iew-grammar-6");
+    if (iew6Book) {
+      // Re-trigger detail views setup to update button
+      openBookDetail(iew6Book);
+    }
+  }
+}
+
+// Float UI Updates
+function setFloatWidgetUnlocked() {
+  const floatWidget = document.getElementById("giveawayFloat");
+  const floatText = document.getElementById("floatText");
+  const floatSubtext = document.getElementById("floatSubtext");
+  const floatEmoji = document.getElementById("floatEmoji");
+  
+  if (!floatWidget) return;
+  
+  floatWidget.classList.add("unlocked");
+  if (floatEmoji) floatEmoji.textContent = "🎁";
+  if (floatText) floatText.textContent = "🎁 登记 0元 抽奖";
+  if (floatSubtext) floatSubtext.style.display = "none";
+}
+
+function setFloatWidgetRegistered(ticketId) {
+  const floatWidget = document.getElementById("giveawayFloat");
+  const floatText = document.getElementById("floatText");
+  const floatSubtext = document.getElementById("floatSubtext");
+  const floatEmoji = document.getElementById("floatEmoji");
+  
+  if (!floatWidget) return;
+  
+  floatWidget.classList.add("unlocked");
+  floatWidget.style.background = "linear-gradient(135deg, hsl(145, 80%, 35%), hsl(145, 80%, 20%))";
+  floatWidget.style.borderColor = "hsl(145, 100%, 45%)";
+  floatWidget.style.boxShadow = "0 8px 24px rgba(16, 185, 129, 0.3)";
+  
+  if (floatEmoji) floatEmoji.textContent = "✅";
+  if (floatText) floatText.textContent = "✅ 已登记抽奖";
+  if (floatSubtext) floatSubtext.style.display = "none";
+}
+
+function setTopBannerRegistered() {
+  const banner = document.getElementById("giveawayBanner");
+  if (banner) {
+    banner.innerHTML = `<span>🎉 <strong>【登记成功】您的抽奖登记已发送！</strong> 祝您好运！抽奖结果将在书架展示期结束后公布，届时 Chris 会直接与您联络！</span>`;
+    banner.style.background = "linear-gradient(90deg, hsla(145, 80%, 35%, 0.2) 0%, hsla(220, 35%, 8%, 0.5) 100%)";
+    banner.style.borderColor = "hsla(145, 80%, 35%, 0.3)";
+  }
+}
+
+function setRaffleModalSuccessMarkup(name, ticketId, contact) {
+  const raffleModalBody = document.getElementById("raffleModalBody");
+  if (raffleModalBody) {
+    raffleModalBody.innerHTML = `
+      <div class="raffle-success-container">
+        <div class="raffle-success-icon">🎉</div>
+        <h3 class="raffle-success-title">您已成功登记！</h3>
+        <p class="raffle-success-desc">
+          恭喜 <strong>${name}</strong>！您的专属抽奖编码 <strong>${ticketId}</strong> 已成功录入，并通过系统直接递交给了 Chris！
+        </p>
+        <p class="raffle-success-desc" style="font-size: 0.8rem; margin-top: 0.4rem; opacity: 0.85;">
+          中奖结果将在书架交易期结束后揭晓。若您中奖，我们会通过微信号或邮箱 <strong>${contact}</strong> 与您建立联系。感谢您的关注！
+        </p>
+        <button class="btn btn-secondary" data-close-modal="giveawayModal" style="margin-top: 1rem; width: 100%; justify-content: center;">
+          <span>返回探索书本</span>
+        </button>
+      </div>
+    `;
+    
+    // Bind click back to close modal
+    const closeBtn = raffleModalBody.querySelector('[data-close-modal="giveawayModal"]');
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        closeModal(document.getElementById("giveawayModal"));
+      });
+    }
+  }
+}
+
+function generateTicketId() {
+  const date = new Date();
+  const yyyymmdd = date.getFullYear() + 
+                   String(date.getMonth() + 1).padStart(2, '0') + 
+                   String(date.getDate()).padStart(2, '0');
+  const randomHex = Math.floor(Math.random() * 0xffff).toString(16).toUpperCase().padStart(4, '0');
+  return `IEW6-FREE-${yyyymmdd}-${randomHex}`;
+}
+
+// --- CONFETTI ANIMATION ENGINE (PURE JS) ---
+function launchConfetti() {
+  const canvas = document.getElementById("confettiCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const particles = [];
+  const colors = ["#ffd700", "#ff007f", "#00f0ff", "#39ff14", "#ffb347", "#ffffff"];
+  
+  // Resize listener
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+  
+  // Populate
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * canvas.height,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+      tiltAngle: 0
+    });
+  }
+  
+  let animationFrameId;
+  let startTime = Date.now();
+  
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    let active = false;
+    
+    particles.forEach((p, idx) => {
+      p.tiltAngle += p.tiltAngleIncremental;
+      p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+      p.x += Math.sin(p.tiltAngle);
+      p.tilt = Math.sin(p.tiltAngle - idx / 3) * 15;
+      
+      if (p.y < canvas.height) {
+        active = true;
+      }
+      
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+      ctx.stroke();
+    });
+    
+    // Stop animation loop after 4 seconds
+    if (active && Date.now() - startTime < 4000) {
+      animationFrameId = requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      cancelAnimationFrame(animationFrameId);
+    }
+  }
+  
+  draw();
+}
+

@@ -15,6 +15,15 @@
 </head>
 <body>
 
+  <!-- Top Giveaway Banner Alert -->
+  <div class="giveaway-banner" id="giveawayBanner">
+    <span>🎁 <strong>【福利抽奖】免费送 IEW 6 写作教材！</strong> 在本站浏览探索并停留 30 秒以上，即可自动解锁 0元 抽奖登记通道！</span>
+    <button class="btn-banner-action" id="bannerGoBtn">
+      <span>去探索书架</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </button>
+  </div>
+
   <!-- Top Hero / Glowing Header -->
   <header class="app-header">
     <div class="header-glow"></div>
@@ -572,6 +581,77 @@
       </div>
     </div>
   </div>
+
+  <!-- MODAL: Free IEW6 Giveaway Raffle Form -->
+  <div class="modal-overlay" id="giveawayModal">
+    <div class="modal-content glass giveaway-modal-width animate-slide-in">
+      <div class="modal-header">
+        <h3 class="modal-title">🎁 IEW6 经典写作教材 0元抽奖登记</h3>
+        <button class="modal-close" data-close-modal="giveawayModal">&times;</button>
+      </div>
+      <div class="raffle-modal-body" id="raffleModalBody">
+        <!-- Raffle Hero Book details -->
+        <div class="raffle-hero">
+          <div class="raffle-book-visual">
+            <div class="raffle-book-3d">
+              <div class="book-spine"></div>
+              <div class="raffle-book-text">
+                <span class="mini-course" style="font-size: 8px; font-weight: 700; opacity: 0.8; letter-spacing: 0.05em; display: block; transform: rotate(-5deg);">IEW6</span>
+                <span class="mini-title" style="font-size: 9px; font-weight: 850; line-height: 1.1; margin-top: 5px; display: block; transform: rotate(-5deg);">Writing & Style</span>
+              </div>
+            </div>
+          </div>
+          <div class="raffle-info">
+            <h4>IEW 6: Structure and Style for Students</h4>
+            <p><strong>真实书况：</strong> 本书是高质量的扫描打印学习副本（非原装活页夹），内含全部核心教材与习题页面，仅缺少前后的少量精装封面，完全不影响学习与刷题！本教材完全免费赠送（可自提或与购买书籍一同寄送）。</p>
+          </div>
+        </div>
+
+        <!-- Dynamic ticket code badge -->
+        <div class="raffle-ticket-badge">
+          <span class="ticket-label">您的专属抽奖编码 (Your Raffle Ticket)</span>
+          <span class="ticket-id" id="raffleTicketId">IEW6-FREE-20260524-XXXX</span>
+        </div>
+
+        <!-- The Raffle Registration Form -->
+        <form class="raffle-form" id="raffleForm">
+          <div class="form-group">
+            <label for="raffleNameInput">您的名字 / 微信昵称 (Your Name) <span class="required">*</span></label>
+            <input type="text" id="raffleNameInput" class="form-control" placeholder="请输入您的称呼，方便中奖后确认身份" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="raffleContactInput">您的微信号或邮箱 (WeChat ID or Email) <span class="required">*</span></label>
+            <input type="text" id="raffleContactInput" class="form-control" placeholder="请输入微信号或常用邮箱，方便中奖后直接联系您" required>
+          </div>
+
+          <div class="form-actions" style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary" id="submitRaffleBtn" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700;">
+              <span>🚀 立即提交登记 (Submit Entry)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Browse-to-Win Widget -->
+  <div class="giveaway-float" id="giveawayFloat">
+    <div class="progress-circle-container">
+      <svg>
+        <circle class="circle-bg" cx="19" cy="19" r="16"></circle>
+        <circle class="circle-fill" id="floatProgressCircle" cx="19" cy="19" r="16" stroke-dasharray="100.53" stroke-dashoffset="100.53"></circle>
+      </svg>
+      <div class="float-icon" id="floatEmoji">🎁</div>
+    </div>
+    <div class="float-text-container">
+      <span class="float-text" id="floatText">正在解锁 0元 领书...</span>
+      <span class="float-subtext" id="floatSubtext">在站浏览并探索 30 秒即可抽奖</span>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas Overlay -->
+  <canvas id="confettiCanvas"></canvas>
 
   <!-- Ripple Toast Alert for Micro-feedback -->
   <div class="toast-container" id="toastContainer"></div>

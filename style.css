@@ -1863,3 +1863,339 @@ label {
     gap: 1rem;
   }
 }
+
+/* ==========================================================================
+   FREE GIVEAWAY & BROWSE-TO-WIN CUSTOM CAMPAIGN STYLES
+   ========================================================================== */
+
+/* --- FREE GIVEAWAY CARD SPECIAL STYLES --- */
+.book-card.giveaway-card {
+  border: 2px solid hsl(45, 95%, 48%) !important; /* Premium Golden Border */
+  box-shadow: 0 0 20px hsla(45, 95%, 48%, 0.25) !important;
+  background: linear-gradient(180deg, var(--bg-card) 0%, hsla(45, 95%, 48%, 0.03) 100%) !important;
+}
+.book-card.giveaway-card:hover {
+  box-shadow: 0 0 35px hsla(45, 95%, 48%, 0.45) !important;
+  border-color: hsl(45, 100%, 55%) !important;
+}
+.book-card.giveaway-card .book-condition-badge {
+  background: hsla(45, 95%, 48%, 0.15) !important;
+  border: 1px solid hsla(45, 95%, 48%, 0.3) !important;
+  color: hsl(45, 100%, 65%) !important;
+}
+.book-card.giveaway-card .price-value {
+  color: hsl(45, 100%, 65%) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 8px hsla(45, 95%, 48%, 0.3);
+}
+
+/* --- TOP GIVEAWAY HEADER BANNER --- */
+.giveaway-banner {
+  background: linear-gradient(90deg, hsla(45, 90%, 50%, 0.18) 0%, hsla(var(--hue-primary), 80%, 48%, 0.15) 100%);
+  border-bottom: 1px solid hsla(45, 90%, 50%, 0.3);
+  color: #ffffff;
+  padding: 0.65rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-display);
+}
+.giveaway-banner strong {
+  color: hsl(45, 100%, 65%);
+  text-shadow: 0 0 10px hsla(45, 90%, 50%, 0.3);
+}
+.giveaway-banner .btn-banner-action {
+  background: hsl(45, 90%, 50%);
+  color: #0b0c10;
+  border: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.giveaway-banner .btn-banner-action:hover {
+  background: hsl(45, 100%, 60%);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px hsla(45, 90%, 50%, 0.4);
+}
+
+/* --- FLOATING BROWSE-TO-WIN WIDGET --- */
+.giveaway-float {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 999;
+  background: rgba(15, 16, 25, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 50px;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  box-shadow: var(--shadow-lg), 0 0 15px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  max-width: 320px;
+  user-select: none;
+}
+.giveaway-float:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: hsla(var(--hue-primary), 80%, 48%, 0.4);
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(16, 185, 129, 0.15);
+}
+.giveaway-float.unlocked {
+  background: linear-gradient(135deg, hsla(45, 95%, 50%, 0.95), hsla(38, 95%, 45%, 0.95));
+  border-color: hsl(45, 100%, 75%);
+  color: #0b0c10;
+  padding: 0.6rem 1.25rem;
+  box-shadow: 0 10px 30px hsla(45, 90%, 50%, 0.3), var(--shadow-neon);
+  animation: pulseFloat 2s infinite ease-in-out;
+}
+.giveaway-float.unlocked .float-text {
+  color: #0b0c10;
+  font-weight: 700;
+}
+.giveaway-float.unlocked .float-icon {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: inherit;
+  animation: wobbleFloat 1s infinite alternate ease-in-out;
+}
+.giveaway-float.unlocked .progress-circle-container {
+  display: none;
+}
+
+/* Circular progress style */
+.progress-circle-container {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.progress-circle-container svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.progress-circle-container circle {
+  fill: none;
+  stroke-width: 3.5;
+}
+.progress-circle-container .circle-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+.progress-circle-container .circle-fill {
+  stroke: var(--color-primary);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.1s linear;
+}
+.float-icon {
+  position: absolute;
+  font-size: 0.95rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+.float-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 0.25rem;
+}
+.float-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+.float-subtext {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  margin-top: 0.05rem;
+  transition: color var(--transition-fast);
+}
+.giveaway-float:hover .float-subtext {
+  color: var(--color-primary-hover);
+}
+.giveaway-float.unlocked .float-subtext {
+  display: none;
+}
+
+/* Confetti Canvas Overlay */
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Keyframe Animations */
+@keyframes pulseFloat {
+  0%, 100% { box-shadow: 0 10px 30px hsla(45, 90%, 50%, 0.3), 0 0 20px hsla(45, 90%, 50%, 0.2); }
+  50% { box-shadow: 0 12px 35px hsla(45, 90%, 50%, 0.5), 0 0 35px hsla(45, 90%, 50%, 0.4); transform: translateY(-6px) scale(1.03); }
+}
+@keyframes wobbleFloat {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+/* --- GIVEAWAY RAFFLE FORM MODAL --- */
+.giveaway-modal-width {
+  max-width: 600px;
+}
+.raffle-modal-body {
+  padding: 1rem 1.5rem;
+}
+.raffle-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: rgba(255, 180, 0, 0.03);
+  border: 1px solid rgba(255, 180, 0, 0.15);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.raffle-book-visual {
+  flex-shrink: 0;
+  perspective: 400px;
+}
+.raffle-book-3d {
+  width: 70px;
+  height: 100px;
+  border-radius: 2px 4px 4px 2px;
+  background: linear-gradient(135deg, hsl(330, 50%, 40%), hsl(330, 50%, 20%));
+  transform: rotateY(-15deg) rotateX(3deg);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.raffle-book-3d .book-spine {
+  width: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+}
+.raffle-book-text {
+  padding: 0.4rem;
+  color: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.raffle-book-text .mini-course {
+  font-size: 0.45rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+.raffle-book-text .mini-title {
+  font-size: 0.55rem;
+  font-weight: 700;
+  margin-top: 0.15rem;
+  line-height: 1.2;
+}
+.raffle-info {
+  flex-grow: 1;
+}
+.raffle-info h4 {
+  font-size: 1.05rem;
+  color: hsl(45, 100%, 65%);
+  margin-bottom: 0.3rem;
+}
+.raffle-info p {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.raffle-ticket-badge {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed hsl(45, 90%, 50%);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin-bottom: 1.25rem;
+}
+.ticket-label {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.ticket-id {
+  font-family: monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: hsl(45, 100%, 65%);
+  text-shadow: 0 0 10px hsla(45, 90%, 50%, 0.3);
+  letter-spacing: 0.05em;
+}
+
+.raffle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.raffle-form .form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.raffle-success-container {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.raffle-success-icon {
+  font-size: 3rem;
+}
+.raffle-success-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #00ff88;
+}
+.raffle-success-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0;
+}
+
