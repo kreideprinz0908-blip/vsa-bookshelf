@@ -465,18 +465,7 @@ const INITIAL_BOOKS = [
     videoUrl: "https://drive.google.com/file/d/1kO_Zrx4wxnda1NBcmExTlzZZFpj5AxWW/view?usp=drivesdk",
     hue: 200
   },
-  {
-    id: "iew-grammar-6",
-    title: "IEW 6: Structure and Style for Students",
-    author: "Institute for Excellence in Writing",
-    category: "Grammar and Writing 6",
-    price: 27,
-    condition: "Fair",
-    status: "Available",
-    notes: "IEW 写作与语法系列第六册学生版。本教材用于系统性培养英文写作架构与修辞表达。注：缺了几页封面和尾页，但里面核心内容完好无损，完全不影响正常学习与阅读。",
-    videoUrl: "https://drive.google.com/file/d/1qm7XxWu-aOxP2BNVPA_pVdInZpetfrbX/view?usp=drivesdk",
-    hue: 330
-  },
+
   {
     id: "toefl-practice",
     title: "TOEFL Practice Tests & Guides",
@@ -628,6 +617,14 @@ function loadState() {
   if (localData) {
     try {
       booksState = JSON.parse(localData);
+
+      // Clean up any deleted books from default INITIAL_BOOKS
+      const initialIds = new Set(INITIAL_BOOKS.map(b => b.id));
+      if (booksState.some(b => !initialIds.has(b.id))) {
+        booksState = booksState.filter(b => initialIds.has(b.id));
+        saveState();
+      }
+
       // Auto-upgrade from legacy categories to the latest refined course classifications
       const hasLegacy = booksState.some(b => 
         b.category === "Latin" || 
