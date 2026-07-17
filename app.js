@@ -835,7 +835,7 @@ function renderGrid(books) {
     const card = document.createElement("div");
     card.dataset.id = book.id;
 
-    const isIEW6 = book.id === 'iew-grammar-6';
+    const isIEW6 = false; // book.id === 'iew-grammar-6'; // Temporarily disabled raffle
     if (isIEW6) {
       card.className = "book-card glass giveaway-card";
     } else {
@@ -1175,7 +1175,7 @@ function triggerViewBookDetail(bookId) {
   detailAuthor.textContent = book.author || "未知";
   detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
   
-  if (book.id === "iew-grammar-6") {
+  if (false && book.id === "iew-grammar-6") { // Temporarily disabled raffle
     detailPrice.innerHTML = `<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 6px;">$27</span>$0 <span style="font-size: 0.75rem; font-weight: 500; color: hsl(45, 100%, 65%);">(福利抽赠)</span>`;
   } else {
     detailPrice.textContent = `$${book.price}`;
@@ -1259,7 +1259,7 @@ function triggerViewBookDetail(bookId) {
   }
 
   // 2. Reservation Button / Giveaway Registration
-  const isIEW6 = book.id === "iew-grammar-6";
+  const isIEW6 = false; // book.id === "iew-grammar-6"; // Temporarily disabled raffle
   if (isIEW6) {
     const raffleBtn = document.createElement("button");
     raffleBtn.className = "btn-large-glow";
