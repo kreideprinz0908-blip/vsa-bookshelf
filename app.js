@@ -516,6 +516,14 @@ const CATEGORY_HUES = {
 };
 
 
+// --- Condition Translations ---
+const CONDITION_TRANSLATIONS = {
+  'Like New': '几乎全新',
+  'Very Good': '非常优良',
+  'Good': '状态良好',
+  'Fair': '成色一般'
+};
+
 // --- App State ---
 let booksState = [];
 let currentCategory = "all";
@@ -923,7 +931,7 @@ function renderGrid(books) {
       <div class="book-info">
         <div class="book-meta-top">
           <span class="book-course-label">${book.category}</span>
-          <span class="book-condition-badge">${book.condition}</span>
+          <span class="book-condition-badge">${CONDITION_TRANSLATIONS[book.condition] || book.condition}</span>
         </div>
         <h3 class="book-title" title="${book.title}">${book.title}</h3>
         <p class="book-author">作者：${book.author || "未知"}</p>
@@ -1167,7 +1175,7 @@ function triggerViewBookDetail(bookId) {
 
   // Set Metadata Details
   detailCategory.textContent = book.category;
-  detailCondition.textContent = book.condition;
+  detailCondition.textContent = CONDITION_TRANSLATIONS[book.condition] || book.condition;
   detailTitle.textContent = book.title;
   detailAuthor.textContent = book.author || "未知";
   detailNotes.textContent = book.notes || "暂无备注。书况优良，适合高中相应课程及备考使用。";
